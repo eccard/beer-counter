@@ -1,6 +1,5 @@
 package com.r5k.contacerveja
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,8 +11,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentAdapter = MyPagerAdapter(supportFragmentManager)
-        viewpager_main.adapter = fragmentAdapter
+//        viewpager_main.adapter = fragmentAdapter
 
-        tabs_main.setupWithViewPager(viewpager_main)
+//        tabs_main.setupWithViewPager(viewpager_main)
     }
 }
