@@ -26,3 +26,14 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// Define versions in a single place
+ext {
+    // Sdk and tools
+    recyclerViewVersion = '1.0.0'
+    cardViewVersion = '1.0.0'
+
+    // App dependencies
+    supportLibraryVersion = '1.0.2'
+    materialVersion = '1.0.0'
+}
