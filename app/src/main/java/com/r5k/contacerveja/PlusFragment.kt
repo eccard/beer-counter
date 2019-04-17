@@ -11,9 +11,9 @@ import com.r5k.contacerveja.R
 /**
  * A simple [Fragment] subclass.
  */
-class ThirdFragment : Fragment() {
+class PlusFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_third,container,false)
+        return inflater.inflate(R.layout.fragment_plus,container,false)
     }
 }

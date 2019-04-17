@@ -3,7 +3,7 @@ package com.r5k.contacerveja
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.r5k.contacervejal.ThirdFragment
+import com.r5k.contacerveja.ThirdFragment
 
 class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
@@ -12,23 +12,29 @@ class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
             0 -> {
                 FirstFragment()
             }
-            1 -> SecondFragment()
+            1 -> {
+                SecondFragment()
+            }
+            2 -> {
+                ThirdFragment()
+            }
             else -> {
-                return ThirdFragment()
+                return PlusFragment()
             }
         }
     }
 
     override fun getCount(): Int {
-        return 3
+        return 4
     }
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> "First Tab"
-            1 -> "Second Tab"
+            0 -> "Cerveja"
+            1 -> "Vinho"
+            2 -> "Cachaça"
             else -> {
-                return "Third Tab"
+                return "+"
             }
         }
     }

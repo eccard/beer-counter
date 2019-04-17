@@ -3,12 +3,12 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.r5k.contacerveja.FirstFragment">
+             tools:context="com.r5k.contacerveja.PlusFragment">
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Cerveja"
+            android:text="+"
             android:textSize="40sp"/>
 
 </FrameLayout>
