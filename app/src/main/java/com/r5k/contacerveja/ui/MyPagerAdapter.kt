@@ -1,9 +1,8 @@
-package com.r5k.contacerveja
+package com.r5k.contacerveja.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.r5k.contacerveja.ThirdFragment
 
 class MyPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 

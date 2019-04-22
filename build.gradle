@@ -36,4 +36,12 @@ ext {
     // App dependencies
     supportLibraryVersion = '1.0.2'
     materialVersion = '1.0.0'
+    roomDatabaseVersion = '1.0.0'
+    rxjava2Version = '2.0.6'
+    rxandroidVersion = '2.0.1'
+
+    // Dagger
+    dagger2Version = '2.11'
+    gsonVersion = '2.8.0'
+
 }
