@@ -16,7 +16,7 @@ interface BillsDao{
     @Query("SELECT * FROM bills")
     fun loadAllBills() : List<Bill>
 
-    @Query("SELECT * FROM bills WHERE status=2")
+    @Query("SELECT * FROM bills WHERE status=1")
     fun loadOpenedBill() : List<Bill>
 
 
