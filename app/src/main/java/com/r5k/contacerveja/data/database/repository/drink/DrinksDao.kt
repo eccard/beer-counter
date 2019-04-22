@@ -12,4 +12,7 @@ interface DrinksDao{
 
     @Query("SELECT * FROM drinks")
     fun loadAll(): List<Drink>
+
+    @Query("SELECT * FROM drinks WHERE bill_id=:billId")
+    fun loadDrinksFromBillId(billId : Long): List<Drink>
 }

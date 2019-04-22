@@ -2,11 +2,15 @@ package com.r5k.contacerveja.ui.main.presenter
 
 import android.util.Log
 import com.r5k.contacerveja.data.database.repository.bill.Bill
+import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.main.interactor.MainVMPInteractor
 import com.r5k.contacerveja.ui.main.view.MainMVPView
 import com.r5k.contacerveja.util.SchedulerProvider
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -20,12 +24,22 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
         Log.d(TAG,"called onAttach")
         compositeDisposable.add(
             interactor!!.getOpenedBill()
-            .compose(schedulerProvider.ioToMainSingleScheduler())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
             .subscribe({t: List<Bill> -> if (t.isEmpty()){
 
                 Log.d(TAG,"before create bill")
                 createBill()
-            } else Log.d(TAG,"t.size="+t.size)
+            } else {
+
+                Log.d(TAG,"t.size="+t.size)
+                if (t.size == 1){
+                    t[0].id?.let { loadDrinksFromBillId(it) }
+                }else {
+                    Log.e(TAG,"algo está muito errado era para ter somente uma conta aberta !!!")
+                }
+
+            }
 
             }, {t: Throwable -> Log.d(TAG,"saindoo error"+t.localizedMessage) }))
     }
@@ -36,14 +50,25 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
         var bill = Bill(null,Calendar.getInstance().time.time,1)
 
 
-//        compositeDisposable.add(
-//            interactor!!.createBill(bill)
-//                .compose(schedulerProvider.ioToMainSingleScheduler())
-//                .subscribe({t: Boolean ->
-//                    if (t) {Log.d(TAG,"bill criado")} else {Log.e(TAG,"bill não criado")}
-//
-//                }, { err -> Log.getStackTraceString(err)}))
+        compositeDisposable.add(
+            interactor!!.createBill(bill)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({t: Boolean ->
+                    if (t) {Log.d(TAG,"bill criado")} else {Log.e(TAG,"bill não criado")}
 
+                }, { err -> Log.getStackTraceString(err)}))
+
+    }
+
+    override fun loadDrinksFromBillId(billId: Long) {
+
+        compositeDisposable.add(
+            interactor!!.loadDrinksFromBillId(billId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({t: List<Drink> -> getView()?.loadDrinks(t)
+                }, { err -> Log.getStackTraceString(err)}))
 
 
     }
