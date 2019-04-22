@@ -13,7 +13,8 @@ class BillsRepository @Inject constructor(private val billsDao: BillsDao) : Bill
     }
 
     override fun loadBiils(): Single<List<Bill>>
-     = Single.fromCallable({ billsDao.loadAllBills() })
+     = Single.fromCallable { billsDao.loadAllBills() }
 
-    override fun loadOpenedBills(): Single<List<Bill>>  = Single.fromCallable({billsDao.loadOpenedBill()})
+    override fun loadOpenedBills(): Single<List<Bill>>  = Single.fromCallable {billsDao.loadOpenedBill()}
+
 }

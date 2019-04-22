@@ -11,5 +11,5 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
         return Observable.just(this.drinksDao.insert(drinks) != -1L)
     }
 
-    override fun loadDrinks(): Observable<List<Drink>> = Observable.fromCallable({ drinksDao.loadAll() })
+    override fun loadDrinks(): Observable<List<Drink>> = Observable.fromCallable { drinksDao.loadAll() }
 }
