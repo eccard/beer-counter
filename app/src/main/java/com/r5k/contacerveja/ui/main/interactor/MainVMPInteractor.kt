@@ -15,4 +15,6 @@ interface MainVMPInteractor : MVPInteractor{
     fun createBill(bill: Bill) : Single<Boolean>
 
     fun loadDrinksFromBillId(billId : Long) : Single<List<Drink>>
+
+    fun createBillAndDefaultDrinks(bill : Bill) :Single<DefaulDrinksForBill>
 }

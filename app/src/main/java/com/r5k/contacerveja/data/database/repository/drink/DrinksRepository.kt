@@ -8,8 +8,8 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
 
     override fun isDrinksRepoEmpty(): Observable<Boolean> = Observable.just(drinksDao.loadAll().isEmpty())
 
-    override fun insertDrink(drinks: Drink): Observable<Boolean> {
-        return Observable.just(this.drinksDao.insert(drinks) != -1L)
+    override fun insertDrink(drinks: Drink): Single<Boolean> {
+        return Single.just(this.drinksDao.insert(drinks) != -1L)
     }
 
     override fun loadDrinks(): Observable<List<Drink>> = Observable.fromCallable { drinksDao.loadAll() }

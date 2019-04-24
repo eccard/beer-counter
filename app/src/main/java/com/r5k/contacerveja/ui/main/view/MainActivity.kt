@@ -1,17 +1,19 @@
 package com.r5k.contacerveja.ui.main.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import com.r5k.contacerveja.R
+import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.MyPagerAdapter
 import com.r5k.contacerveja.ui.base.BaseActivity
 import com.r5k.contacerveja.ui.main.interactor.MainMVPInteractor
 import com.r5k.contacerveja.ui.main.presenter.MainMVPPresenter
-import dagger.android.DispatchingAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainMVPView {
+
+    private val TAG = MainActivity::class.java.simpleName
 
     @Inject
     internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainMVPInteractor>
@@ -45,5 +47,9 @@ class MainActivity : BaseActivity(), MainMVPView {
 
     override fun unlockDrawer() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun loadDrinks(drinks: List<Drink>) {
+        Log.d(TAG,"loadDrinks size = " + drinks.size)
     }
 }

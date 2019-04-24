@@ -6,7 +6,7 @@ import io.reactivex.Single
 interface DrinksRepo{
     fun isDrinksRepoEmpty(): Observable<Boolean>
 
-    fun insertDrink(drink : Drink): Observable<Boolean>
+    fun insertDrink(drink : Drink): Single<Boolean>
 
     fun loadDrinks(): Observable<List<Drink>>
 

@@ -13,22 +13,22 @@ import com.r5k.contacerveja.data.database.repository.bill.Bill
 data class Drink(
     @Expose
     @PrimaryKey
-    var id: Long,
+    var id: Long?,
 
     @Expose
     @SerializedName("name")
     @ColumnInfo(name = "name")
-    val name: String,
+    val name: String?,
 
     @Expose
     @SerializedName("price")
     @ColumnInfo(name = "price")
-    val price: String,
+    val price: String?,
 
     @Expose
     @SerializedName("qnt")
     @ColumnInfo(name = "qnt")
-    val qnt:Int,
+    val qnt:Int?,
 
     @Expose
     @SerializedName("bill_id")

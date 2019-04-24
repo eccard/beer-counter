@@ -7,7 +7,7 @@ interface BillsRepo{
 
     fun isBillsReposEmpty() : Observable<Boolean>
 
-    fun insertBiil(bill: Bill) : Single<Boolean>
+    fun insertBiil(bill: Bill) : Single<Long>
 
     fun loadBiils() : Single<List<Bill>>
 

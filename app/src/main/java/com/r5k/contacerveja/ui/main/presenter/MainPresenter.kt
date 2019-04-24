@@ -26,18 +26,17 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
             interactor!!.getOpenedBill()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-            .subscribe({t: List<Bill> -> if (t.isEmpty()){
-
-                Log.d(TAG,"before create bill")
-                createBill()
-            } else {
-
-                Log.d(TAG,"t.size="+t.size)
-                if (t.size == 1){
-                    t[0].id?.let { loadDrinksFromBillId(it) }
-                }else {
-                    Log.e(TAG,"algo está muito errado era para ter somente uma conta aberta !!!")
-                }
+            .subscribe({t: List<Bill> ->
+                if (t.isEmpty()){
+                    Log.d(TAG,"before create bill")
+                    createBill()
+                } else {
+                    Log.d(TAG,"t.size="+t.size)
+                    if (t.size == 1){
+                        t[0].id?.let { loadDrinksFromBillId(it) }
+                    }else {
+                        Log.e(TAG,"algo está muito errado era para ter somente uma conta aberta !!!")
+                    }
 
             }
 
@@ -51,23 +50,26 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
 
         compositeDisposable.add(
-            interactor!!.createBill(bill)
+            interactor!!.createBillAndDefaultDrinks(bill)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({t: Boolean ->
-                    if (t) {Log.d(TAG,"bill criado")} else {Log.e(TAG,"bill não criado")}
+                .subscribe({it
+                    if (it.p1&&it.p2&&it.p3) {Log.d(TAG,"bill criado")} else {Log.e(TAG,"bill não criado")}
 
                 }, { err -> Log.getStackTraceString(err)}))
 
     }
 
     override fun loadDrinksFromBillId(billId: Long) {
+        Log.d(TAG,"called loadDrinksFromBillId")
 
         compositeDisposable.add(
             interactor!!.loadDrinksFromBillId(billId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({t: List<Drink> -> getView()?.loadDrinks(t)
+                .subscribe({t: List<Drink> ->
+                    Log.d(TAG,"loadDrinksFromBillId drinks size="+t.size)
+                    getView()?.loadDrinks(t)
                 }, { err -> Log.getStackTraceString(err)}))
 
 
