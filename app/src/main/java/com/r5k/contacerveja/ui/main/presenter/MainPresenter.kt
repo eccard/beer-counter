@@ -7,7 +7,6 @@ import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.main.interactor.MainVMPInteractor
 import com.r5k.contacerveja.ui.main.view.MainMVPView
 import com.r5k.contacerveja.util.SchedulerProvider
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +16,8 @@ import javax.inject.Inject
 class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal constructor(interactor: I, schedulerProvider : SchedulerProvider, disposable : CompositeDisposable) : BasePresenter<V,I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable),MainMVPPresenter<V,I>{
 
     private val TAG = MainPresenter::class.java.simpleName
+
+    private val drinksListId : MutableList<Long> = mutableListOf<Long>()
 
     override fun onAttach(view: V?) {
         super.onAttach(view)
@@ -54,7 +55,19 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({it
-                    if (it.p1&&it.p2&&it.p3) {Log.d(TAG,"bill criado")} else {Log.e(TAG,"bill não criado")}
+                    if (it.drink1Id != -1L && it.drink2Id != -1L && it.drink3Id != -1L) {
+                        Log.d(TAG,"bill criado, billId=${it.billId}")
+                        Log.d(TAG,"default drink1Id=${it.drink1Id}")
+                        Log.d(TAG,"default drink2Id=${it.drink2Id}")
+                        Log.d(TAG,"default drink3Id=${it.drink3Id}")
+
+                        drinksListId.add(it.drink1Id)
+                        drinksListId.add(it.drink2Id)
+                        drinksListId.add(it.drink3Id)
+
+                    } else {
+                        Log.e(TAG,"bill não criado")
+                    }
 
                 }, { err -> Log.getStackTraceString(err)}))
 
