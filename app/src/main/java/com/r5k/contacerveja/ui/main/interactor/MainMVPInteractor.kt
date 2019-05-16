@@ -34,16 +34,29 @@ class MainMVPInteractor @Inject internal constructor(private val drinksRepoHelpe
 
         this.mBillId = billId
 
-        val drink1 = Drink(null,"Cerveja Brama",null,null, billId)
-        val drink2 = Drink(null,"Vinho",null,null, billId)
-        val drink3 = Drink(null,"Cachaça",null,null, billId)
+        val drink1Name = "Cerveja Brama"
+        val drink2Name = "Vinho"
+        val drink3Name = "Cachaça"
+
+        val drink1 = Drink(null,drink1Name,null,null, billId)
+        val drink2 = Drink(null,drink2Name,null,null, billId)
+        val drink3 = Drink(null,drink3Name,null,null, billId)
 
 
         return Single.zip(drinksRepoHelper.insertDrink(drink1),
                             drinksRepoHelper.insertDrink(drink2),
                             drinksRepoHelper.insertDrink(drink3),
                         Function3<Long,Long,Long,DefaultDrinksForBill>
-            {t1, t2, t3 -> DefaultDrinksForBill(billId,t1,t2,t3) })
+            {
+                t1, t2, t3 ->
+
+                DefaultDrinksForBill(billId,
+                        mutableListOf(Drink(t1,drink1Name,null,null,billId),
+                        Drink(t2,drink2Name,null,null,billId),
+                        Drink(t3,drink3Name,null,null,billId)))
+
+            }
+        )
 
     }
 

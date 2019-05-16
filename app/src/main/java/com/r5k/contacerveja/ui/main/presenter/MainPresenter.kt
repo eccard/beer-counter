@@ -17,8 +17,6 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
     private val TAG = MainPresenter::class.java.simpleName
 
-    private val drinksListId : MutableList<Long> = mutableListOf<Long>()
-
     override fun onAttach(view: V?) {
         super.onAttach(view)
 
@@ -55,15 +53,12 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({it
-                    if (it.drink1Id != -1L && it.drink2Id != -1L && it.drink3Id != -1L) {
-                        Log.d(TAG,"bill criado, billId=${it.billId}")
-                        Log.d(TAG,"default drink1Id=${it.drink1Id}")
-                        Log.d(TAG,"default drink2Id=${it.drink2Id}")
-                        Log.d(TAG,"default drink3Id=${it.drink3Id}")
+                    if (it.drinksList.size > 0) {
 
-                        drinksListId.add(it.drink1Id)
-                        drinksListId.add(it.drink2Id)
-                        drinksListId.add(it.drink3Id)
+                        Log.d(TAG,"bill criado, billId=${it.billId}")
+                        it.drinksList.forEach {
+                            Log.d(TAG,"=${it.toString()}")
+                        }
 
                     } else {
                         Log.e(TAG,"bill não criado")
