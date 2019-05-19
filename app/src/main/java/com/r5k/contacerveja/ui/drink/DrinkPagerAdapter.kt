@@ -20,15 +20,16 @@ class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
 
-        return when (position) {
-            0 -> {
-                DrinkFragment()
-            }
+        val frg : Fragment
 
-            else -> {
-                return PlusFragment()
-            }
+
+        if (drinksList!!.isNotEmpty() && position < drinksList?.size!!){
+            frg = drinksList?.get(position)?.let { DrinkFragment.newInstance(it) } as Fragment
+        } else {
+            frg = PlusFragment()
         }
+
+        return frg
     }
 
     override fun getCount(): Int = if (drinksList !=null) drinksList!!.size + MOCK_PLUS_SLOT else 0
