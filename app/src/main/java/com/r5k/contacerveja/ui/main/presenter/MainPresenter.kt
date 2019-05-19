@@ -57,8 +57,10 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
                         Log.d(TAG,"bill criado, billId=${it.billId}")
                         it.drinksList.forEach {
-                            Log.d(TAG,"=${it.toString()}")
+                            Log.d(TAG,"=$it")
                         }
+
+                        getView()?.loadDefaultDrinks(it)
 
                     } else {
                         Log.e(TAG,"bill não criado")
@@ -77,7 +79,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({t: List<Drink> ->
                     Log.d(TAG,"loadDrinksFromBillId drinks size="+t.size)
-                    getView()?.loadDrinks(t)
+                    getView()?.loadDrinksForOpenedBill(t)
                 }, { err -> Log.getStackTraceString(err)}))
 
 

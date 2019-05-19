@@ -49,7 +49,13 @@ class MainActivity : BaseActivity(), MainMVPView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun loadDrinks(drinks: List<Drink>) {
-        Log.d(TAG,"loadDrinks size = " + drinks.size)
+    override fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill) {
+        Log.d(TAG, "loadDefaultDrinks DefaultDrinksForBill size = $drinksForBill")
+        fragmentAdapter.setDrinkList(drinksForBill.drinksList)
+    }
+
+    override fun loadDrinksForOpenedBill(drinks: List<Drink>) {
+        Log.d(TAG, "loadDefaultDrinks size = $drinks")
+        fragmentAdapter.setDrinkList(drinks)
     }
 }
