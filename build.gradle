@@ -27,21 +27,3 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// Define versions in a single place
-ext {
-    // Sdk and tools
-    recyclerViewVersion = '1.0.0'
-    cardViewVersion = '1.0.0'
-
-    // App dependencies
-    supportLibraryVersion = '1.0.2'
-    materialVersion = '1.0.0'
-    roomDatabaseVersion = '1.0.0'
-    rxjava2Version = '2.0.6'
-    rxandroidVersion = '2.0.1'
-
-    // Dagger
-    dagger2Version = '2.22'
-    gsonVersion = '2.8.0'
-
-}
