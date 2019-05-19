@@ -9,8 +9,8 @@ import io.reactivex.Single
 import io.reactivex.functions.Function3
 import javax.inject.Inject
 
-class MainMVPInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
-                                                     private val billsRepository: BillsRepository ): BaseInteractor(),MainVMPInteractor{
+class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
+                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainVMPInteractor{
 
     private var mBillId : Long = -1
 
@@ -30,7 +30,7 @@ class MainMVPInteractor @Inject internal constructor(private val drinksRepoHelpe
         return billsRepository.insertBiil(bill).flatMap { t ->  createDefaultsDrinks(t)}
     }
 
-    fun createDefaultsDrinks(billId : Long): Single<DefaultDrinksForBill> {
+    private fun createDefaultsDrinks(billId : Long): Single<DefaultDrinksForBill> {
 
         this.mBillId = billId
 
