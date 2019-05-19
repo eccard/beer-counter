@@ -2,30 +2,38 @@ package com.r5k.contacerveja.ui.main.view
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
-import com.r5k.contacerveja.ui.MyPagerAdapter
+import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
 import com.r5k.contacerveja.ui.base.BaseActivity
-import com.r5k.contacerveja.ui.main.interactor.MainMVPInteractor
+import com.r5k.contacerveja.ui.main.interactor.DefaultDrinksForBill
+import com.r5k.contacerveja.ui.main.interactor.MainInteractor
 import com.r5k.contacerveja.ui.main.presenter.MainMVPPresenter
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), MainMVPView {
+class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
+
 
     private val TAG = MainActivity::class.java.simpleName
 
     @Inject
-    internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainMVPInteractor>
+    internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainInteractor>
 
-//    @Inject
-//    internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    @Inject
+    internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    private lateinit var fragmentAdapter: DrinkPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragmentAdapter = MyPagerAdapter(supportFragmentManager)
+        fragmentAdapter = DrinkPagerAdapter(supportFragmentManager)
         viewpager_main.adapter = fragmentAdapter
 
         tabs_main.setupWithViewPager(viewpager_main)
@@ -34,8 +42,10 @@ class MainActivity : BaseActivity(), MainMVPView {
 
     }
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
+        fragmentDispatchingAndroidInjector
+
     override fun onFragmentAttached() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onFragmentDetached(tag: String) {

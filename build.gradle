@@ -41,7 +41,7 @@ ext {
     rxandroidVersion = '2.0.1'
 
     // Dagger
-    dagger2Version = '2.11'
+    dagger2Version = '2.22'
     gsonVersion = '2.8.0'
 
 }
