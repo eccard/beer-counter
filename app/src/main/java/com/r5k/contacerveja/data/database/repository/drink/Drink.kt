@@ -34,7 +34,7 @@ data class Drink(
     @Expose
     @SerializedName("qnt")
     @ColumnInfo(name = "qnt")
-    val qnt: Int?,
+    var qnt: Int,
 
     @Expose
     @SerializedName("bill_id")
@@ -46,7 +46,7 @@ data class Drink(
         source.readValue(Long::class.java.classLoader) as Long?,
         source.readString(),
         source.readString(),
-        source.readValue(Int::class.java.classLoader) as Int?,
+        source.readValue(Int::class.java.classLoader) as Int,
         source.readLong()
     )
 

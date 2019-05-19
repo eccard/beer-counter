@@ -11,4 +11,6 @@ interface DrinksRepo{
     fun loadDrinks(): Observable<List<Drink>>
 
     fun loadDrinksFromBillId(billId : Long) : Single<List<Drink>>
+
+    fun updateDrink(drink : Drink) : Single<Int>
 }

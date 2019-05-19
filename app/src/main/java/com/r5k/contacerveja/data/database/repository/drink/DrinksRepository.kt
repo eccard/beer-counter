@@ -9,7 +9,7 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
     override fun isDrinksRepoEmpty(): Observable<Boolean> = Observable.just(drinksDao.loadAll().isEmpty())
 
     override fun insertDrink(drinks: Drink): Single<Long>  {
-        return Single.just(this.drinksDao.insert(drinks))
+        return Single.just(drinksDao.insert(drinks))
     }
 
     override fun loadDrinks(): Observable<List<Drink>> = Observable.fromCallable { drinksDao.loadAll() }
@@ -18,4 +18,7 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
     override fun loadDrinksFromBillId(billId: Long): Single<List<Drink>> =
         Single.fromCallable { drinksDao.loadDrinksFromBillId(billId) }
 
+    override fun updateDrink(drink: Drink): Single<Int> {
+        return Single.fromCallable { drinksDao.updateDrink(drink) }
+    }
 }

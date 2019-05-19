@@ -1,9 +1,6 @@
 package com.r5k.contacerveja.data.database.repository.drink
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface DrinksDao{
@@ -15,4 +12,7 @@ interface DrinksDao{
 
     @Query("SELECT * FROM drinks WHERE bill_id=:billId")
     fun loadDrinksFromBillId(billId : Long): List<Drink>
+
+    @Update
+    fun updateDrink(drink : Drink) : Int
 }

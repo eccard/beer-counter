@@ -9,9 +9,6 @@ class DrinkInteractor @Inject internal
         constructor(private val drinkRepoHelper : DrinksRepository)
     :BaseInteractor(),DrinkMVPInteractor{
 
-    override fun plusDrink(drink: Drink) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
+    override fun plusDrink(drink: Drink) = drinkRepoHelper.updateDrink(drink)
 
 }
