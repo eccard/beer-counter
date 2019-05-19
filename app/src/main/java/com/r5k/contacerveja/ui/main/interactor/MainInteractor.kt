@@ -51,9 +51,9 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
                 t1, t2, t3 ->
 
                 DefaultDrinksForBill(billId,
-                        mutableListOf(Drink(t1,drink1Name,null,null,billId),
-                        Drink(t2,drink2Name,null,null,billId),
-                        Drink(t3,drink3Name,null,null,billId)))
+                        mutableListOf(Drink(t1,drink1Name,null,0,billId),
+                        Drink(t2,drink2Name,null,0,billId),
+                        Drink(t3,drink3Name,null,0,billId)))
 
             }
         )
