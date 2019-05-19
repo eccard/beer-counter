@@ -38,9 +38,9 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         val drink2Name = "Vinho"
         val drink3Name = "Cachaça"
 
-        val drink1 = Drink(null,drink1Name,null,null, billId)
-        val drink2 = Drink(null,drink2Name,null,null, billId)
-        val drink3 = Drink(null,drink3Name,null,null, billId)
+        val drink1 = Drink(null,drink1Name,null,0, billId)
+        val drink2 = Drink(null,drink2Name,null,0, billId)
+        val drink3 = Drink(null,drink3Name,null,0, billId)
 
 
         return Single.zip(drinksRepoHelper.insertDrink(drink1),
