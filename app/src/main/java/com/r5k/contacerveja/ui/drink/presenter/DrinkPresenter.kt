@@ -20,20 +20,30 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
     private val TAG = DrinkPresenter::class.java.simpleName
 
     override fun onPlusDrinkSelected(drink: Drink) {
-        Log.d(TAG,"onPlusDrinkSelected -drink=$drink")
-        Log.d(TAG,"onPlusDrinkSelected -interactor=$interactor")
+        updateDrinkInfoInDb(interactor!!.plusQntForDrink(drink))
+    }
+
+
+    override fun onNegDrinkSelected(drink: Drink) {
+        updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
+    }
+
+
+    private fun updateDrinkInfoInDb(drink: Drink) {
+        Log.d(TAG,"updateDrinkInfoInDb -drink=$drink")
+        Log.d(TAG,"updateDrinkInfoInDb -interactor=$interactor")
 
         GlobalScope.launch(context = Dispatchers.Main) {
 
             val afectedRows = withContext(context = Dispatchers.IO) {
-                interactor!!.plusDrink(drink).await()
+                interactor!!.updateDrinkInDb(drink).await()
             }
 
-            Log.d(TAG,"onPlusDrinkSelected -t =$afectedRows")
+            Log.d(TAG,"updateDrinkInfoInDb -afectedRows =$afectedRows")
             if (afectedRows >0){
                 getView()?.displayTotal(drink.qnt.toString())
             } else {
-                Log.e(TAG,"onPlusDrinkSelected nao fez o update do drink")
+                Log.e(TAG,"updateDrinkInfoInDb nao fez o update do drink")
             }
         }
     }

@@ -54,6 +54,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         mDrink!!.qnt.let { qnt_drink.text = it.toString() }
 
         btn_plus.setOnClickListener(this)
+        btn_neg.setOnClickListener(this)
     }
 
 
@@ -70,8 +71,10 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_plus -> {
-                mDrink!!.qnt = mDrink!!.qnt + 1
                 presenter.onPlusDrinkSelected(mDrink!!)
+            }
+            R.id.btn_neg -> {
+                presenter.onNegDrinkSelected(mDrink!!)
             }
         }
     }
