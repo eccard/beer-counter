@@ -5,6 +5,8 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.ui.base.BaseInteractor
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
@@ -14,24 +16,24 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 
     override fun getBillData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        //appDatabase.
-
 //        billsRepository.loadBiils()
     }
 
-    override fun getOpenedBill(): List<Bill> = billsRepository.loadOpenedBills()
 
-    override fun loadDrinksFromBillId(billId: Long): List<Drink>
-            = drinksRepoHelper.loadDrinksFromBillId(billId)
+    override suspend fun getOpenedBill() = GlobalScope.async {
+        billsRepository.loadOpenedBills()
+    }
 
-//    override fun createBillAndDefaultDrinks(bill: Bill): DefaultDrinksForBill {
-//        return billsRepository.insertBiil(bill).flatMap { t ->  createDefaultsDrinks(t)}
-//    }
 
-/*
-    private fun createDefaultsDrinks(billId : Long): DefaultDrinksForBill {
+    override suspend fun loadDrinksFromBillId(billId: Long) = GlobalScope.async{
+        drinksRepoHelper.loadDrinksFromBillId(billId)
+    }
 
-        this.mBillId = billId
+
+
+
+    override suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
+        val billId = billsRepository.insertBiil(bill)
 
         val drink1Name = "Cerveja Brama"
         val drink2Name = "Vinho"
@@ -41,24 +43,15 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         val drink2 = Drink(null,drink2Name,null,0, billId)
         val drink3 = Drink(null,drink3Name,null,0, billId)
 
+        val drink1Id = drinksRepoHelper.insertDrink(drink1)
+        val drink2Id = drinksRepoHelper.insertDrink(drink2)
+        val drink3Id = drinksRepoHelper.insertDrink(drink3)
 
-        return Single.zip(drinksRepoHelper.insertDrink(drink1),
-                            drinksRepoHelper.insertDrink(drink2),
-                            drinksRepoHelper.insertDrink(drink3),
-                        Function3<Long,Long,Long,DefaultDrinksForBill>
-            {
-                t1, t2, t3 ->
-
-                DefaultDrinksForBill(billId,
-                        mutableListOf(Drink(t1,drink1Name,null,0,billId),
-                        Drink(t2,drink2Name,null,0,billId),
-                        Drink(t3,drink3Name,null,0,billId)))
-
-            }
-        )
-
+        DefaultDrinksForBill(billId,
+            mutableListOf(Drink(drink1Id,drink1Name,null,0,billId),
+                Drink(drink2Id,drink2Name,null,0,billId),
+                Drink(drink3Id,drink3Name,null,0,billId)))
     }
-*/
 
     override fun createBill(bill: Bill): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

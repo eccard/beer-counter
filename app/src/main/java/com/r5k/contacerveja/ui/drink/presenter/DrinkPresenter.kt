@@ -5,6 +5,10 @@ import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.drink.interactor.DrinkMVPInteractor
 import com.r5k.contacerveja.ui.drink.view.DrinkMVPView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -19,23 +23,19 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
         Log.d(TAG,"onPlusDrinkSelected -drink=$drink")
         Log.d(TAG,"onPlusDrinkSelected -interactor=$interactor")
 
-/*        compositeDisposable.add(
-            interactor!!.plusDrink(drink)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {t ->
-                        Log.d(TAG,"onPlusDrinkSelected -t =$t")
-                        if (t >0){
-                            getView()?.displayTotal(drink.qnt.toString())
-                        } else {
-                            Log.e(TAG,"onPlusDrinkSelected nao fez o update do drink")
-                        }
-                    },
-                    {t: Throwable -> Log.d(TAG,"onPlusDrinkSelected saindoo error"+t.localizedMessage) }
-                )
-        )
-                */
+        GlobalScope.launch(context = Dispatchers.Main) {
+
+            val afectedRows = withContext(context = Dispatchers.IO) {
+                interactor!!.plusDrink(drink).await()
+            }
+
+            Log.d(TAG,"onPlusDrinkSelected -t =$afectedRows")
+            if (afectedRows >0){
+                getView()?.displayTotal(drink.qnt.toString())
+            } else {
+                Log.e(TAG,"onPlusDrinkSelected nao fez o update do drink")
+            }
+        }
     }
 
 }
