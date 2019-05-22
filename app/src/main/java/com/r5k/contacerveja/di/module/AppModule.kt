@@ -9,10 +9,8 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepo
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.util.AppConstants
-import com.r5k.contacerveja.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Singleton
 
 @Module
@@ -45,9 +43,4 @@ class AppModule {
     internal fun provideBillsRepoHelper(appDatabase: AppDatabase): BillsRepo = BillsRepository(appDatabase.billsDao())
 
 
-    @Provides
-    internal fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
-
-    @Provides
-    internal fun provideSchedulerProvider(): SchedulerProvider = SchedulerProvider()
 }

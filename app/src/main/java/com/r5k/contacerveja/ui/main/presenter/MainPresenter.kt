@@ -6,14 +6,10 @@ import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.main.interactor.MainVMPInteractor
 import com.r5k.contacerveja.ui.main.view.MainMVPView
-import com.r5k.contacerveja.util.SchedulerProvider
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal constructor(interactor: I, schedulerProvider : SchedulerProvider, disposable : CompositeDisposable) : BasePresenter<V,I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable),MainMVPPresenter<V,I>{
+class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal constructor(interactor: I) : BasePresenter<V,I>(interactor = interactor),MainMVPPresenter<V,I>{
 
     private val TAG = MainPresenter::class.java.simpleName
 
@@ -21,7 +17,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
         super.onAttach(view)
 
         Log.d(TAG,"called onAttach")
-        compositeDisposable.add(
+/*        compositeDisposable.add(
             interactor!!.getOpenedBill()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -40,6 +36,8 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
             }
 
             }, {t: Throwable -> Log.d(TAG,"saindoo error"+t.localizedMessage) }))
+
+        */
     }
 
     override fun createBill() {
@@ -48,6 +46,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
         var bill = Bill(null,Calendar.getInstance().time.time,1)
 
 
+/*
         compositeDisposable.add(
             interactor!!.createBillAndDefaultDrinks(bill)
                 .subscribeOn(Schedulers.io())
@@ -67,12 +66,14 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                     }
 
                 }, { err -> Log.getStackTraceString(err)}))
+*/
 
     }
 
     override fun loadDrinksFromBillId(billId: Long) {
         Log.d(TAG,"called loadDrinksFromBillId")
 
+/*
         compositeDisposable.add(
             interactor!!.loadDrinksFromBillId(billId)
                 .subscribeOn(Schedulers.io())
@@ -81,6 +82,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                     Log.d(TAG,"loadDrinksFromBillId drinks size="+t.size)
                     getView()?.loadDrinksForOpenedBill(t)
                 }, { err -> Log.getStackTraceString(err)}))
+*/
 
 
     }

@@ -1,20 +1,17 @@
 package com.r5k.contacerveja.data.database.repository.bill
 
-import io.reactivex.Observable
-import io.reactivex.Single
 import javax.inject.Inject
 
 class BillsRepository @Inject constructor(private val billsDao: BillsDao) : BillsRepo{
 
-    override fun isBillsReposEmpty(): Observable<Boolean> = Observable.just(billsDao.loadAllBills().isEmpty())
+    override fun isBillsReposEmpty(): Boolean = billsDao.loadAllBills().isEmpty()
 
-    override fun insertBiil(bill: Bill): Single<Long> {
-        return Single.just(this.billsDao.insert(bill))
+    override fun insertBiil(bill: Bill): Long {
+        return this.billsDao.insert(bill)
     }
 
-    override fun loadBiils(): Single<List<Bill>>
-     = Single.fromCallable { billsDao.loadAllBills() }
+    override fun loadBiils(): List<Bill> =  billsDao.loadAllBills()
 
-    override fun loadOpenedBills(): Single<List<Bill>>  = Single.fromCallable {billsDao.loadOpenedBill()}
+    override fun loadOpenedBills(): List<Bill>  = billsDao.loadOpenedBill()
 
 }

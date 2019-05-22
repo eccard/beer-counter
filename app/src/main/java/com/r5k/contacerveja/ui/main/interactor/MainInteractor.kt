@@ -5,8 +5,6 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.ui.base.BaseInteractor
-import io.reactivex.Single
-import io.reactivex.functions.Function3
 import javax.inject.Inject
 
 class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
@@ -21,16 +19,17 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 //        billsRepository.loadBiils()
     }
 
-    override fun getOpenedBill(): Single<List<Bill>> = billsRepository.loadOpenedBills()
+    override fun getOpenedBill(): List<Bill> = billsRepository.loadOpenedBills()
 
-    override fun loadDrinksFromBillId(billId: Long): Single<List<Drink>>
+    override fun loadDrinksFromBillId(billId: Long): List<Drink>
             = drinksRepoHelper.loadDrinksFromBillId(billId)
 
-    override fun createBillAndDefaultDrinks(bill: Bill): Single<DefaultDrinksForBill> {
-        return billsRepository.insertBiil(bill).flatMap { t ->  createDefaultsDrinks(t)}
-    }
+//    override fun createBillAndDefaultDrinks(bill: Bill): DefaultDrinksForBill {
+//        return billsRepository.insertBiil(bill).flatMap { t ->  createDefaultsDrinks(t)}
+//    }
 
-    private fun createDefaultsDrinks(billId : Long): Single<DefaultDrinksForBill> {
+/*
+    private fun createDefaultsDrinks(billId : Long): DefaultDrinksForBill {
 
         this.mBillId = billId
 
@@ -59,8 +58,9 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         )
 
     }
+*/
 
-    override fun createBill(bill: Bill): Single<Boolean> {
+    override fun createBill(bill: Bill): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -1,16 +1,13 @@
 package com.r5k.contacerveja.data.database.repository.drink
 
-import io.reactivex.Observable
-import io.reactivex.Single
-
 interface DrinksRepo{
-    fun isDrinksRepoEmpty(): Observable<Boolean>
+    fun isDrinksRepoEmpty(): Boolean
 
-    fun insertDrink(drink : Drink): Single<Long>
+    fun insertDrink(drink : Drink): Long
 
-    fun loadDrinks(): Observable<List<Drink>>
+    fun loadDrinks(): List<Drink>
 
-    fun loadDrinksFromBillId(billId : Long) : Single<List<Drink>>
+    fun loadDrinksFromBillId(billId : Long) : List<Drink>
 
-    fun updateDrink(drink : Drink) : Single<Int>
+    fun updateDrink(drink : Drink) : Int
 }

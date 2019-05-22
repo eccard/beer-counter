@@ -5,26 +5,21 @@ import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.drink.interactor.DrinkMVPInteractor
 import com.r5k.contacerveja.ui.drink.view.DrinkMVPView
-import com.r5k.contacerveja.util.SchedulerProvider
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
 class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
-@Inject constructor(interactor: I, schedulerProvider : SchedulerProvider, disposable : CompositeDisposable)
-    :BasePresenter<V,I>(interactor = interactor, schedulerProvider = schedulerProvider, compositeDisposable = disposable),
+@Inject constructor(interactor: I)
+    :BasePresenter<V,I>(interactor = interactor),
         DrinkMVPPresenter<V,I>{
 
     private val TAG = DrinkPresenter::class.java.simpleName
 
     override fun onPlusDrinkSelected(drink: Drink) {
         Log.d(TAG,"onPlusDrinkSelected -drink=$drink")
-        Log.d(TAG,"onPlusDrinkSelected -compositeDisposable=$compositeDisposable")
         Log.d(TAG,"onPlusDrinkSelected -interactor=$interactor")
 
-        compositeDisposable.add(
+/*        compositeDisposable.add(
             interactor!!.plusDrink(drink)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,6 +35,7 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
                     {t: Throwable -> Log.d(TAG,"onPlusDrinkSelected saindoo error"+t.localizedMessage) }
                 )
         )
+                */
     }
 
 }

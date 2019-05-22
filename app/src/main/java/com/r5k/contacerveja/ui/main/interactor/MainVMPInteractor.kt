@@ -3,18 +3,17 @@ package com.r5k.contacerveja.ui.main.interactor
 import com.r5k.contacerveja.data.database.repository.bill.Bill
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.MVPInteractor
-import io.reactivex.Single
 
 interface MainVMPInteractor : MVPInteractor{
 
     // todo change return
     fun getBillData()
 
-    fun getOpenedBill() : Single<List<Bill>>
+    fun getOpenedBill() : List<Bill>
 
-    fun createBill(bill: Bill) : Single<Boolean>
+    fun createBill(bill: Bill) : Boolean
 
-    fun loadDrinksFromBillId(billId : Long) : Single<List<Drink>>
+    fun loadDrinksFromBillId(billId : Long) : List<Drink>
 
-    fun createBillAndDefaultDrinks(bill : Bill) :Single<DefaultDrinksForBill>
+//    fun createBillAndDefaultDrinks(bill : Bill) :DefaultDrinksForBill
 }
