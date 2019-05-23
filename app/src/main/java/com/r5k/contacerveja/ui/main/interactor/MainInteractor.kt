@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
                                                   private val billsRepository: BillsRepository ): BaseInteractor(),MainVMPInteractor{
 
-    private var mBillId : Long = -1
+    private var mOpenedBillId: Long = -1
 
     override fun getBillData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -26,35 +26,44 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
     }
 
 
-    override suspend fun loadDrinksFromBillId(billId: Long) = GlobalScope.async{
+    override suspend fun loadDrinksFromBillId(billId: Long) = GlobalScope.async {
+        mOpenedBillId = billId
         drinksRepoHelper.loadDrinksFromBillId(billId)
     }
 
 
-
-
     override suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
-        val billId = billsRepository.insertBiil(bill)
+        mOpenedBillId = billsRepository.insertBiil(bill)
 
         val drink1Name = "Cerveja Brama"
         val drink2Name = "Vinho"
         val drink3Name = "Cachaça"
 
-        val drink1 = Drink(null,drink1Name,null,0, billId)
-        val drink2 = Drink(null,drink2Name,null,0, billId)
-        val drink3 = Drink(null,drink3Name,null,0, billId)
+        val drink1 = Drink(null, drink1Name, null, 0, mOpenedBillId)
+        val drink2 = Drink(null, drink2Name, null, 0, mOpenedBillId)
+        val drink3 = Drink(null, drink3Name, null, 0, mOpenedBillId)
 
         val drink1Id = drinksRepoHelper.insertDrink(drink1)
         val drink2Id = drinksRepoHelper.insertDrink(drink2)
         val drink3Id = drinksRepoHelper.insertDrink(drink3)
 
-        DefaultDrinksForBill(billId,
-            mutableListOf(Drink(drink1Id,drink1Name,null,0,billId),
-                Drink(drink2Id,drink2Name,null,0,billId),
-                Drink(drink3Id,drink3Name,null,0,billId)))
+        DefaultDrinksForBill(
+            mOpenedBillId,
+            mutableListOf(
+                Drink(drink1Id, drink1Name, null, 0, mOpenedBillId),
+                Drink(drink2Id, drink2Name, null, 0, mOpenedBillId),
+                Drink(drink3Id, drink3Name, null, 0, mOpenedBillId)
+            )
+        )
     }
 
     override fun createBill(bill: Bill): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    override suspend fun addDrink(drinkName: String) = GlobalScope.async {
+        val drinkId = drinksRepoHelper.insertDrink(Drink(null, drinkName, null, 0, mOpenedBillId))
+        Drink(drinkId,drinkName,null,0,mOpenedBillId)
     }
 }
