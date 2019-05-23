@@ -8,10 +8,15 @@ import com.r5k.contacerveja.ui.drink.view.DrinkFragment
 
 class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-    private var drinksList : List<Drink>? = null
+    private var drinksList : MutableList<Drink>? = null
 
-    fun setDrinkList(drinksList : List<Drink>){
+    fun setDrinkList(drinksList : MutableList<Drink>){
         this.drinksList = drinksList
+        notifyDataSetChanged()
+    }
+
+    fun addDrink(drink : Drink){
+        this.drinksList!!.add(drink)
         notifyDataSetChanged()
     }
 
