@@ -70,8 +70,13 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 
     override fun loadDrinksForOpenedBill(drinks: List<Drink>) {
         Log.d(TAG, "loadDefaultDrinks size = $drinks")
-        fragmentAdapter.setDrinkList(drinks)
+        fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
+
+    override fun loadDrink(drink: Drink) {
+        fragmentAdapter.addDrink(drink)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
         return true
