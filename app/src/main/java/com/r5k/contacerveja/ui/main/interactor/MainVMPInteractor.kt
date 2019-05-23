@@ -17,4 +17,6 @@ interface MainVMPInteractor : MVPInteractor{
     suspend fun loadDrinksFromBillId(billId : Long) : Deferred<List<Drink>>
 
     suspend fun createBillAndDefaultDrinks(bill : Bill) : Deferred<DefaultDrinksForBill>
+
+    suspend fun addDrink(drinkName : String) : Deferred<Drink>
 }
