@@ -11,8 +11,17 @@ class DrinkInteractor @Inject internal
         constructor(private val drinkRepoHelper : DrinksRepository)
     :BaseInteractor(),DrinkMVPInteractor{
 
-    override suspend fun plusDrink(drink: Drink) = GlobalScope.async {
+    override suspend fun updateDrinkInDb(drink: Drink) = GlobalScope.async {
         drinkRepoHelper.updateDrink(drink)
     }
 
+    override fun plusQntForDrink(drink: Drink): Drink {
+        drink.qnt = drink.qnt + 1
+        return drink
+    }
+
+    override fun negQntForDrink(drink: Drink): Drink {
+        drink.qnt = drink.qnt - 1
+        return drink
+    }
 }
