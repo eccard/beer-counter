@@ -3,4 +3,8 @@
     <string name="add_drink">Add drink</string>
     <string name="hint_text_add_drink">Drink name</string>
     <string name="validation_empty">Empty drink name</string>
+    <string name="edit_drink">Edit Drink</string>
+    <string name="delete_drink">Delete Drink</string>
+    <string name="delete_drink_alert_message">Are you sure delete drink</string>
+    <string name="delete_drink_alert_title">Dink deletion</string>
 </resources>
