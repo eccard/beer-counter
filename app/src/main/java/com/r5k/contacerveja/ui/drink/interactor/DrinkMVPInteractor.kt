@@ -8,4 +8,5 @@ interface DrinkMVPInteractor : MVPInteractor {
     suspend fun updateDrinkInDb(drink : Drink) : Deferred<Int>
     fun plusQntForDrink(drink : Drink) : Drink
     fun negQntForDrink(drink : Drink) : Drink
+    suspend fun deleteDrink(drink : Drink) : Deferred<Int>
 }
