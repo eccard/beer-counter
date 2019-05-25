@@ -29,4 +29,25 @@ class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence {
             return drinksList?.get(position)?.name!!
     }
+
+    fun updateDrinkName(drink: Drink){
+        for ( i in 0..drinksList!!.size) {
+            if (drinksList!![i].id == drink.id){
+                drinksList!!.removeAt(i)
+                drinksList!!.add(i,drink)
+                notifyDataSetChanged()
+                break
+            }
+        }
+    }
+
+    fun removeDrinkFragment(drink: Drink){
+        for ( i in 0..drinksList!!.size) {
+            if (drinksList!![i].id == drink.id){
+                drinksList!!.removeAt(i)
+                notifyDataSetChanged()
+                break
+            }
+        }
+    }
 }
