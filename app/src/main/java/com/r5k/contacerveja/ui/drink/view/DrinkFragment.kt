@@ -1,24 +1,25 @@
 package com.r5k.contacerveja.ui.drink.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.textfield.TextInputEditText
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BaseFragment
 import com.r5k.contacerveja.ui.drink.interactor.DrinkMVPInteractor
 import com.r5k.contacerveja.ui.drink.presenter.DrinkMVPPresenter
-import com.r5k.contacerveja.ui.drink.presenter.DrinkPresenter
 import kotlinx.android.synthetic.main.fragment_generic_drink.*
 import javax.inject.Inject
+import android.view.*
+import com.r5k.contacerveja.ui.main.view.MainActivity
 
 
 class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
 
     private val TAG = DrinkFragment::class.java.simpleName
-
+    var mContext : Context? = null
 
     companion object {
         private const val MY_DRINK = "drink"
@@ -39,6 +40,8 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mDrink = arguments?.getParcelable(MY_DRINK)
+        setHasOptionsMenu(true)
+        mContext = this!!.activity!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -77,5 +80,88 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
                 presenter.onNegDrinkSelected(mDrink!!)
             }
         }
+    }
+
+    private fun showEditDialog(){
+
+        val builder = mContext?.let { AlertDialog.Builder(it) }
+
+        // https://stackoverflow.com/questions/10695103/creating-custom-alertdialog-what-is-the-root-view
+        // Seems ok to inflate view with null rootView
+        val view = layoutInflater.inflate(com.r5k.contacerveja.R.layout.dialog_new_drink, null)
+
+        val newDrinkEditText = view.findViewById(com.r5k.contacerveja.R.id.edt_new_drink_name) as TextInputEditText
+
+        newDrinkEditText.setText(mDrink!!.name)
+
+        builder!!.setView(view)
+
+        // set up the ok button
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            val newDrinkName = newDrinkEditText.text
+            var isValid = true
+            if (newDrinkName!!.isBlank()) {
+                newDrinkEditText.error = getString(com.r5k.contacerveja.R.string.validation_empty)
+                isValid = false
+            }
+
+            if (isValid) {
+                Log.d(TAG, "Edit to newDrinkName $newDrinkName")
+                val newDrink = Drink(mDrink!!.id,newDrinkName.toString(),mDrink!!.price,mDrink!!.qnt,mDrink!!.billId)
+                presenter.onUpdateDrinkName(newDrink)
+                updateDrink(newDrink)
+            }
+
+            if (isValid) {
+                dialog.dismiss()
+            }
+        }
+
+        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    private fun updateDrink(drink: Drink){
+        var mainActivity = activity as MainActivity
+        mainActivity.updateTitle(drink)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item!!.itemId) {
+            R.id.action_edit_drink -> {
+                showEditDialog()
+                true
+            }
+            R.id.action_delete_drink -> {
+                showDeleteDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showDeleteDialog() {
+        val builder = mContext?.let { AlertDialog.Builder(it) }
+        builder!!.setMessage(getString(R.string.delete_drink_alert_title))
+        builder.setMessage("""${getString(R.string.delete_drink_alert_message)}${mDrink!!.name}?""")
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            presenter.onDeleteDrink(mDrink!!)
+        }
+
+        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    override fun onDeletedDrink(drink: Drink) {
+        var mainActivity = activity as MainActivity
+        mainActivity.removeDrinkFragment(drink)
     }
 }
