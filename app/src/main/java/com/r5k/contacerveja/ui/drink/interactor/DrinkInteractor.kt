@@ -34,4 +34,8 @@ class DrinkInteractor @Inject internal
             else -> false
         }
     }
+
+    override suspend fun deleteDrink(drink: Drink) = GlobalScope.async {
+        drinkRepoHelper.deleteDrink(drink)
+    }
 }

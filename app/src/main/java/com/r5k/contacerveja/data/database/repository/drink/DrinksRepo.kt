@@ -10,4 +10,6 @@ interface DrinksRepo{
     fun loadDrinksFromBillId(billId : Long) : List<Drink>
 
     fun updateDrink(drink : Drink) : Int
+
+    fun deleteDrink(drink : Drink) : Int
 }
