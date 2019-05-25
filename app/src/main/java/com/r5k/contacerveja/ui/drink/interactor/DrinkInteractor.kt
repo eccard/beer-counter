@@ -24,4 +24,8 @@ class DrinkInteractor @Inject internal
         drink.qnt = drink.qnt - 1
         return drink
     }
+
+    override suspend fun deleteDrink(drink: Drink) = GlobalScope.async {
+        drinkRepoHelper.deleteDrink(drink)
+    }
 }

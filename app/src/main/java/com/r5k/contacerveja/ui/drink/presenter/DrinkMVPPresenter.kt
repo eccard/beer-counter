@@ -8,4 +8,6 @@ import com.r5k.contacerveja.ui.drink.view.DrinkMVPView
 interface DrinkMVPPresenter<V : DrinkMVPView, I : DrinkMVPInteractor> : MVPPresenter<V,I>{
     fun onPlusDrinkSelected(drink : Drink)
     fun onNegDrinkSelected(drink : Drink)
+    fun onUpdateDrinkName(drink : Drink)
+    fun onDeleteDrink(drink : Drink)
 }

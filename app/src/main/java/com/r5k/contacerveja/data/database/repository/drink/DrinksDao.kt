@@ -15,4 +15,7 @@ interface DrinksDao{
 
     @Update
     fun updateDrink(drink : Drink) : Int
+
+    @Delete
+    fun deleteDrink(drink : Drink): Int
 }
