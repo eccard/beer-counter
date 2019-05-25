@@ -88,4 +88,16 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
     override fun onDrawserOptionAboutClick(): Boolean? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun addNewDrink(drinkName: String) {
+
+        GlobalScope.launch(context = Dispatchers.Main) {
+            val drinkIdIn = withContext(context = Dispatchers.IO) {
+                interactor!!.addDrink(drinkName).await()
+            }
+            Log.d(TAG,"addNewDrink drinkIdInBd="+drinkIdIn)
+            getView()!!.loadDrink(drinkIdIn)
+
+        }
+    }
 }

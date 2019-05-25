@@ -10,4 +10,6 @@ interface MainMVPView : MVPView {
 
     fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill)
     fun loadDrinksForOpenedBill(drinks: List<Drink>)
+
+    fun loadDrink(drink:Drink)
 }
