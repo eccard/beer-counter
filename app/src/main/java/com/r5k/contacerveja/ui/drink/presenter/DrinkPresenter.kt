@@ -25,7 +25,16 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
 
 
     override fun onNegDrinkSelected(drink: Drink) {
-        updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
+        if(checkIfZero(drink)) {
+            updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
+        }
+    }
+
+    private fun checkIfZero(drink: Drink): Boolean {
+        if(drink.qnt - 1 >= 0) {
+            return true
+        }
+        return false
     }
 
 
