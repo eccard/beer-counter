@@ -2,8 +2,10 @@ package com.r5k.contacerveja.ui.drink.interactor
 
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.MVPInteractor
-import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 
 interface DrinkMVPInteractor : MVPInteractor {
-    fun plusDrink(drink : Drink) : Single<Int>
+    suspend fun updateDrinkInDb(drink : Drink) : Deferred<Int>
+    fun plusQntForDrink(drink : Drink) : Drink
+    fun negQntForDrink(drink : Drink) : Drink
 }

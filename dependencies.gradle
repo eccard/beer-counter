@@ -17,11 +17,10 @@ ext {
     ]
 
 
-    def room_version = "1.0.0"
+    def room_version = "2.1.0-alpha07"
     room = [
-            rxjava : "android.arch.persistence.room:rxjava2:$room_version",
-            compiler : "android.arch.persistence.room:compiler:$room_version"
-    ]
+            runtime : "androidx.room:room-runtime:$room_version",
+            compiler : "android.arch.persistence.room:compiler:$room_version" ]
 
     def dagger2_version = '2.22'
     dagger2 = [
@@ -32,11 +31,10 @@ ext {
     ]
 
 
-    def rxJava_version = '2.0.6'
-    def rxAndroid_version = '2.0.1'
-    rx = [
-            java: "io.reactivex.rxjava2:rxjava:$rxJava_version",
-            android: "io.reactivex.rxjava2:rxandroid:$rxAndroid_version"
+    def kotlinCoroutines_version = '1.2.1'
+    kotlinCoroutines = [
+            core : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version",
+            android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"
     ]
 
 

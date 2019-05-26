@@ -27,16 +27,39 @@
             android:id="@+id/btn_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_exposure_plus_1_24px"
-            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_add_black_24dp"
 
-            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/qnt_drink"
-            app:layout_constraintVertical_bias="0.20"/>
+            app:layout_constraintVertical_bias="0.20"
+            app:layout_constraintStart_toEndOf="@+id/space" android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.15"/>
+
+    <ImageButton
+            android:id="@+id/btn_neg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_remove_black_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/qnt_drink"
+            app:layout_constraintVertical_bias="0.20"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/space"
+            app:layout_constraintHorizontal_bias="0.85"/>
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="403dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/space"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

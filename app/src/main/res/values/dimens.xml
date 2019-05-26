@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_margin">16dp</dimen>
+    <dimen name="dialog_margin_edt_top">16dp</dimen>
+    <dimen name="add_and_remove_btn_size">24dp</dimen>
+    <dimen name="add_and_remove_viewport_size">24.0</dimen>
+</resources>

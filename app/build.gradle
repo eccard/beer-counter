@@ -35,9 +35,9 @@ dependencies {
             supportLibraries.values(),
             dagger2.core,
             dagger2.dagger_android,
-            room.rxjava,
             gson.values(),
-            rx.values()
+            kotlinCoroutines.values(),
+            room.runtime
     )
 
     kapt (

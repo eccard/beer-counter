@@ -3,18 +3,20 @@ package com.r5k.contacerveja.ui.main.interactor
 import com.r5k.contacerveja.data.database.repository.bill.Bill
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.MVPInteractor
-import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 
 interface MainVMPInteractor : MVPInteractor{
 
     // todo change return
     fun getBillData()
 
-    fun getOpenedBill() : Single<List<Bill>>
+    suspend fun getOpenedBill() : Deferred<List<Bill>>
 
-    fun createBill(bill: Bill) : Single<Boolean>
+    fun createBill(bill: Bill) : Boolean
 
-    fun loadDrinksFromBillId(billId : Long) : Single<List<Drink>>
+    suspend fun loadDrinksFromBillId(billId : Long) : Deferred<List<Drink>>
 
-    fun createBillAndDefaultDrinks(bill : Bill) :Single<DefaultDrinksForBill>
+    suspend fun createBillAndDefaultDrinks(bill : Bill) : Deferred<DefaultDrinksForBill>
+
+    suspend fun addDrink(drinkName : String) : Deferred<Drink>
 }
