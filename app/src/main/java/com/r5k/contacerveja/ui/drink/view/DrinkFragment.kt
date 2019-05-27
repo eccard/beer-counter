@@ -147,7 +147,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     private fun showDeleteDialog() {
         val builder = mContext?.let { AlertDialog.Builder(it) }
         builder!!.setMessage(getString(R.string.delete_drink_alert_title))
-        builder.setMessage("""${getString(R.string.delete_drink_alert_message)}${mDrink!!.name}?""")
+        builder.setMessage("""${getString(R.string.delete_drink_alert_message)} ${mDrink!!.name}?""")
 
         builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
             presenter.onDeleteDrink(mDrink!!)
