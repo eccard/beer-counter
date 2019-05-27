@@ -73,7 +73,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
 
-    override fun loadDrink(drink: Drink) {
+    override fun addNewDrink(drink: Drink) {
         fragmentAdapter.addDrink(drink)
     }
 
