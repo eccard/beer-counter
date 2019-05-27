@@ -25,18 +25,8 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
 
 
     override fun onNegDrinkSelected(drink: Drink) {
-        if(checkIfZero(drink)) {
-            updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
-        }
+        updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
     }
-
-    private fun checkIfZero(drink: Drink): Boolean {
-        if(drink.qnt - 1 >= 0) {
-            return true
-        }
-        return false
-    }
-
 
     private fun updateDrinkInfoInDb(drink: Drink) {
         Log.d(TAG,"updateDrinkInfoInDb -drink=$drink")
