@@ -58,6 +58,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
 
         btn_plus.setOnClickListener(this)
         btn_neg.setOnClickListener(this)
+        qnt_drink.setOnClickListener(this)
     }
 
 
@@ -78,6 +79,9 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
             }
             R.id.btn_neg -> {
                 presenter.onNegDrinkSelected(mDrink!!)
+            }
+            R.id.qnt_drink -> {
+                (activity as MainActivity).showChangeAmountDialog(mDrink!!)
             }
         }
     }

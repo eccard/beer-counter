@@ -13,6 +13,8 @@
             android:layout_height="wrap_content"
             android:textSize="40sp"
 
+            android:focusable="true"
+            android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"

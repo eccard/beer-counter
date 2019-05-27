@@ -104,4 +104,14 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
         }
     }
+
+    override fun changeDrinkAmount(drink: Drink, amount: Int) {
+        GlobalScope.launch(context = Dispatchers.Main) {
+            val updatedDrink = withContext(context = Dispatchers.IO) {
+                interactor!!.changeDrinkAmount(drink, amount).await()
+            }
+            Log.d(TAG,"changeDrinkAmount from=${drink.qnt} to=${updatedDrink.qnt}")
+            loadDrinks()
+        }
+    }
 }
