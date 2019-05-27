@@ -66,4 +66,11 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         val drinkId = drinksRepoHelper.insertDrink(Drink(null, drinkName, null, 0, mOpenedBillId))
         Drink(drinkId,drinkName,null,0,mOpenedBillId)
     }
+
+
+    override suspend fun changeDrinkAmount(drink: Drink, amount: Int) = GlobalScope.async{
+        drink.qnt = amount
+        drinksRepoHelper.updateDrink(drink)
+        drink
+    }
 }

@@ -116,9 +116,38 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
             if (isValid) {
                 Log.d(TAG, "Adding newDrinkName $newDrinkName")
                 presenter.addNewDrink(newDrinkName.toString())
+                dialog.dismiss()
+            }
+        }
+
+        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    fun showChangeAmountDialog(drink : Drink){
+        val context = this
+        val builder = AlertDialog.Builder(context)
+
+        val view = layoutInflater.inflate(R.layout.dialog_change_amount, null)
+
+        val amountEditText = view.findViewById(R.id.edt_change_amount) as TextInputEditText
+
+        builder.setView(view)
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            val newAmount = amountEditText.text
+            var isValid = true
+            if (newAmount!!.isBlank()) {
+                amountEditText.error = getString(R.string.validation_empty)
+                isValid = false
             }
 
             if (isValid) {
+                Log.d(TAG, "Changing drink amount to $newAmount")
+                presenter.changeDrinkAmount(drink, newAmount.toString().toInt())
                 dialog.dismiss()
             }
         }

@@ -19,4 +19,6 @@ interface MainVMPInteractor : MVPInteractor{
     suspend fun createBillAndDefaultDrinks(bill : Bill) : Deferred<DefaultDrinksForBill>
 
     suspend fun addDrink(drinkName : String) : Deferred<Drink>
+
+    suspend fun changeDrinkAmount(drink : Drink, amount : Int) : Deferred<Drink>
 }
