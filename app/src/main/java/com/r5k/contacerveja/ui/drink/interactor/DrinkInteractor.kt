@@ -20,8 +20,18 @@ class DrinkInteractor @Inject internal
         return drink
     }
 
-    override fun negQntForDrink(drink: Drink): Drink {
-        drink.qnt = drink.qnt - 1
-        return drink
+    override fun negQntForDrink(drink: Drink): Drink? {
+        if(isValidQuantity(drink)){
+            drink.qnt = drink.qnt - 1
+            return drink
+        }
+        return null
+    }
+
+    private fun isValidQuantity(drink: Drink): Boolean {
+        return when{
+            drink.qnt > 0 -> true
+            else -> false
+        }
     }
 }

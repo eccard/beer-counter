@@ -25,9 +25,8 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
 
 
     override fun onNegDrinkSelected(drink: Drink) {
-        updateDrinkInfoInDb(interactor!!.negQntForDrink(drink))
+        interactor!!.negQntForDrink(drink)?.let { updateDrinkInfoInDb(it) }
     }
-
 
     private fun updateDrinkInfoInDb(drink: Drink) {
         Log.d(TAG,"updateDrinkInfoInDb -drink=$drink")
