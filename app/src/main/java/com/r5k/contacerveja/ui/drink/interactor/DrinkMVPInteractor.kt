@@ -7,5 +7,5 @@ import kotlinx.coroutines.Deferred
 interface DrinkMVPInteractor : MVPInteractor {
     suspend fun updateDrinkInDb(drink : Drink) : Deferred<Int>
     fun plusQntForDrink(drink : Drink) : Drink
-    fun negQntForDrink(drink : Drink) : Drink
+    fun negQntForDrink(drink : Drink) : Drink?
 }
