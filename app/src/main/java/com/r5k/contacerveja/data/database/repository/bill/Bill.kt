@@ -17,7 +17,7 @@ data class Bill(
 
     @Expose
     @ColumnInfo(name = "status")
-    val status: Int = 1,
+    var status: Int = BillState.OPEN.ordinal,
 
 
     @Expose

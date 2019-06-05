@@ -2,6 +2,7 @@ package com.r5k.contacerveja.ui.main.presenter
 
 import android.util.Log
 import com.r5k.contacerveja.data.database.repository.bill.Bill
+import com.r5k.contacerveja.data.database.repository.bill.BillState
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
 import com.r5k.contacerveja.ui.main.interactor.MainVMPInteractor
@@ -50,7 +51,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
     override fun createBill() {
         Log.d(TAG,"called createBill")
 
-        var bill = Bill(null,Calendar.getInstance().time.time,1)
+        var bill = Bill(null,Calendar.getInstance().time.time,BillState.OPEN.ordinal)
 
         GlobalScope.launch(context = Dispatchers.Main) {
 
