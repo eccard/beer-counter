@@ -12,6 +12,6 @@ class BillsRepository @Inject constructor(private val billsDao: BillsDao) : Bill
 
     override fun loadBiils(): List<Bill> =  billsDao.loadAllBills()
 
-    override fun loadOpenedBills(): List<Bill>  = billsDao.loadOpenedBill()
+    override fun loadOpenedBills(): List<Bill>  = billsDao.loadBillWithState(BillState.OPEN.ordinal)
 
 }
