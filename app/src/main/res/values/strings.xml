@@ -9,4 +9,6 @@
     <string name="delete_drink_alert_message">Are you sure delete drink</string>
     <string name="delete_drink_alert_title">Dink deletion</string>
     <string name="total">Total</string>
+    <string name="historic">Historic</string>
+    <string name="favorites">Favorites</string>
 </resources>

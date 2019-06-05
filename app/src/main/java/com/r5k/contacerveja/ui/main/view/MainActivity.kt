@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.r5k.contacerveja.BuildConfig
 import com.r5k.contacerveja.R
@@ -27,7 +28,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
+class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
 
     private val TAG = MainActivity::class.java.simpleName
@@ -48,6 +49,8 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         viewpager_main.adapter = fragmentAdapter
 
         tabs_main.setupWithViewPager(viewpager_main)
+        bottom_nav.setOnNavigationItemSelectedListener(this)
+        fab.setOnClickListener(this)
 
         presenter.onAttach(this)
 
@@ -99,7 +102,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         }
     }
 
-    fun showAddDrinkDialog() {
+    private fun showAddDrinkDialog() {
         val context = this
         val builder = AlertDialog.Builder(context)
 
@@ -139,9 +142,19 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         fragmentAdapter.updateDrinkName(drink)
     }
 
-    fun removeDrinkFragment(drink : Drink){
+    fun removeDrinkFragment(drink : Drink) {
         fragmentAdapter.removeDrinkFragment(drink)
     }
+
+    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+        when (p0.itemId){
+            R.id.navigation_history -> 1
+            else -> 2
+        }
+
+        return true
+    }
+
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.fab){
