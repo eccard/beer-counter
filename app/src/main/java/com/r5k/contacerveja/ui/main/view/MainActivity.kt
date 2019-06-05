@@ -135,4 +135,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
     fun removeDrinkFragment(drink : Drink){
         fragmentAdapter.removeDrinkFragment(drink)
     }
+    override fun onClosedBill() {
+        Toast.makeText(this,"bill fechado",Toast.LENGTH_SHORT).show()
+    }
 }

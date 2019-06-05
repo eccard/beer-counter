@@ -1,9 +1,6 @@
 package com.r5k.contacerveja.data.database.repository.bill
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface BillsDao{
@@ -18,6 +15,13 @@ interface BillsDao{
 
     @Query("SELECT * FROM bills WHERE status=:state")
     fun loadBillWithState(state : Int) : List<Bill>
+
+    @Update
+    fun updateBill(bill : Bill) : Int
+
+    @Query("UPDATE bills SET status=:state WHERE id=:billId")
+    fun updateBillState(billId : Long,state : Int) : Int
+
 
 
 }

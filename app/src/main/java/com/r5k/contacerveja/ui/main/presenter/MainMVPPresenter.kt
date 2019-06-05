@@ -11,6 +11,8 @@ interface MainMVPPresenter<V :MainMVPView, I : MainVMPInteractor> : MVPPresenter
 
     fun createBill()
 
+    fun closeBill()
+
     fun loadDrinks()
 
     fun loadDrinksFromBillId(billId : Long)

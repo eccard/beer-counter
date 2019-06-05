@@ -11,4 +11,6 @@ interface BillsRepo{
 
     fun loadOpenedBills() : List<Bill>
 
+    fun closeBil(billId: Long) : Int
+
 }
