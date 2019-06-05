@@ -17,7 +17,7 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 
     override fun getBillData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        billsRepository.loadBiils()
+//        billsRepository.loadBills()
     }
 
 
@@ -33,7 +33,7 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 
 
     override suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
-        mOpenedBillId = billsRepository.insertBiil(bill)
+        mOpenedBillId = billsRepository.insertBill(bill)
 
         val drink1Name = "Cerveja Brama"
         val drink2Name = "Vinho"

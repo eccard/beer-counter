@@ -6,11 +6,11 @@ class BillsRepository @Inject constructor(private val billsDao: BillsDao) : Bill
 
     override fun isBillsReposEmpty(): Boolean = billsDao.loadAllBills().isEmpty()
 
-    override fun insertBiil(bill: Bill): Long {
+    override fun insertBill(bill: Bill): Long {
         return this.billsDao.insert(bill)
     }
 
-    override fun loadBiils(): List<Bill> =  billsDao.loadAllBills()
+    override fun loadBills(): List<Bill> =  billsDao.loadAllBills()
 
     override fun loadOpenedBills(): List<Bill>  = billsDao.loadBillWithState(BillState.OPEN.ordinal)
 
