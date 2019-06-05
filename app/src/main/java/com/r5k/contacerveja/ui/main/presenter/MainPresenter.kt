@@ -105,4 +105,35 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
         }
     }
+
+    override fun loadTotalOfBill(){
+
+        GlobalScope.launch(context = Dispatchers.Main) {
+
+            val drinks = withContext(context = Dispatchers.IO) {
+                interactor!!.loadDrinksFromOpenedBill().await()
+            }
+
+            val totalOfBill = withContext(context = Dispatchers.IO){
+                interactor!!.callTotalOfBill(drinks).await()
+            }
+
+            getView()?.showTotal(drinks,totalOfBill)
+        }
+    }
+
+    override fun closeBill() {
+
+        GlobalScope.launch(context = Dispatchers.Main) {
+
+            val affectedCollumns = withContext(context = Dispatchers.IO) {
+                interactor!!.closeBill().await()
+            }
+
+            if (affectedCollumns > 0){
+                getView()?.onClosedBill()
+            }
+
+        }
+    }
 }

@@ -19,4 +19,6 @@ interface MainMVPPresenter<V :MainMVPView, I : MainVMPInteractor> : MVPPresenter
 
     fun addNewDrink(drinkName : String)
 
+    fun loadTotalOfBill()
+
 }

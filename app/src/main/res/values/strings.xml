@@ -8,4 +8,5 @@
     <string name="delete_drink">Delete Drink</string>
     <string name="delete_drink_alert_message">Are you sure delete drink</string>
     <string name="delete_drink_alert_title">Dink deletion</string>
+    <string name="total">Total</string>
 </resources>

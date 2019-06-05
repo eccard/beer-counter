@@ -22,4 +22,7 @@ interface MainVMPInteractor : MVPInteractor{
 
     suspend fun addDrink(drinkName : String) : Deferred<Drink>
 
+    suspend fun loadDrinksFromOpenedBill() : Deferred<List<Drink>>
+
+    suspend fun callTotalOfBill(drinks :List<Drink>) : Deferred<Double>
 }

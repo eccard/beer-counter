@@ -1,12 +1,19 @@
 package com.r5k.contacerveja.ui.main.view
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
+import com.r5k.contacerveja.BuildConfig
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
@@ -135,6 +142,58 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
     fun removeDrinkFragment(drink : Drink){
         fragmentAdapter.removeDrinkFragment(drink)
     }
+    override fun onClick(v: View?) {
+        if (v != null) {
+            if (v.id == R.id.fab){
+                presenter.loadTotalOfBill()
+            }
+        }
+    }
+
+    override fun showTotal(drinks: List<Drink>, total: Double) {
+        val context = this
+        val builder = AlertDialog.Builder(context)
+
+        val view = layoutInflater.inflate(R.layout.dialog_show_total, null)
+
+        var totalDrinks = 0
+        drinks.forEach {
+
+            totalDrinks += it.qnt
+
+            val listItem = layoutInflater.inflate(android.R.layout.simple_list_item_1, null)
+
+            var priceAndTotal = ""
+            if ( it.price != null) {
+                priceAndTotal = String.format("%f  Total=%f",it.price,(it.qnt * it.price.toDouble()))
+
+            }
+            val details = String.format("%s \t%d \t%s", it.name, it.qnt, priceAndTotal)
+            listItem.findViewById<TextView>(android.R.id.text1).text = details
+            listItem.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+            view.findViewById<LinearLayout>(R.id.ll_container).addView(listItem)
+        }
+
+        val textViewTotal = TextView(this)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            textViewTotal.setTextAppearance(this,android.R.style.TextAppearance_Large)
+        } else {
+            textViewTotal.setTextAppearance(android.R.style.TextAppearance_Large)
+        }
+        textViewTotal.text = String.format("Drinks =%d \nPrice  =%.2f",totalDrinks,total)
+        textViewTotal.layoutParams  = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+        view.findViewById<LinearLayout>(R.id.ll_container).addView(textViewTotal)
+
+        builder.setView(view)
+
+        // set up the ok button
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            presenter.closeBill()
+        }
+
+        builder.show()
+    }
+
     override fun onClosedBill() {
         Toast.makeText(this,"bill fechado",Toast.LENGTH_SHORT).show()
     }

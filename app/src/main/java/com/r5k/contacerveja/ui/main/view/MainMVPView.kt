@@ -12,5 +12,8 @@ interface MainMVPView : MVPView {
     fun loadDrinksForOpenedBill(drinks: List<Drink>)
 
     fun addNewDrink(drink:Drink)
+
+    fun showTotal(drinks: List<Drink>, total : Double)
+
     fun onClosedBill()
 }
