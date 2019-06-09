@@ -33,8 +33,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
             Log.d(TAG, "opened biils = $openedBills")
 
             if (openedBills.isEmpty()) {
-                Log.d(TAG, "before create bill")
-                createBill()
+                getView()?.showPlusButton()
             } else {
                 Log.d(TAG, "openedBills.size=" + openedBills.size)
                 if (openedBills.size == 1) {

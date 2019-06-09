@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -14,11 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
-import com.r5k.contacerveja.BuildConfig
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
-import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
 import com.r5k.contacerveja.ui.base.BaseActivity
+import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
 import com.r5k.contacerveja.ui.main.interactor.DefaultDrinksForBill
 import com.r5k.contacerveja.ui.main.interactor.MainInteractor
 import com.r5k.contacerveja.ui.main.presenter.MainMVPPresenter
@@ -32,6 +30,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
 
 
     private val TAG = MainActivity::class.java.simpleName
+    var hasOpenedBill = false
 
     @Inject
     internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainInteractor>
@@ -74,11 +73,13 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     }
 
     override fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill) {
+        changeFABBackground(true)
         Log.d(TAG, "loadDefaultDrinks DefaultDrinksForBill size = $drinksForBill")
         fragmentAdapter.setDrinkList(drinksForBill.drinksList)
     }
 
     override fun loadDrinksForOpenedBill(drinks: List<Drink>) {
+        changeFABBackground(true)
         Log.d(TAG, "loadDefaultDrinks size = $drinks")
         fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
@@ -158,7 +159,11 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.fab){
-                presenter.loadTotalOfBill()
+                if (hasOpenedBill){
+                    presenter.loadTotalOfBill()
+                } else {
+                    presenter.createBill()
+                }
             }
         }
     }
@@ -208,6 +213,33 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     }
 
     override fun onClosedBill() {
-        Toast.makeText(this,"bill fechado",Toast.LENGTH_SHORT).show()
+
+        showPlusButton()
+        val emptyDrinkList = mutableListOf<Drink>()
+        fragmentAdapter.setDrinkList(emptyDrinkList)
+        Toast.makeText(this,getString(R.string.toast_close_bill),Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun showPlusButton() {
+        changeFABBackground(false)
+    }
+
+    private fun changeFABBackground(hasOpenedBill: Boolean){
+        this.hasOpenedBill = hasOpenedBill
+
+        val drawableId = if (hasOpenedBill){
+            R.drawable.ic_baseline_done_24px
+        } else {
+            R.drawable.ic_add_black_24dp
+        }
+
+        val drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resources.getDrawable(drawableId,theme)
+        } else {
+            resources.getDrawable(drawableId)
+        }
+
+        fab.setImageDrawable(drawable)
     }
 }

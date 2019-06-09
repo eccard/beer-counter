@@ -11,4 +11,5 @@
     <string name="total">Total</string>
     <string name="historic">Historic</string>
     <string name="favorites">Favorites</string>
+    <string name="toast_close_bill">Closed bill</string>
 </resources>

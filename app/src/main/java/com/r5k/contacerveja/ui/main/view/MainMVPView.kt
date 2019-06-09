@@ -16,4 +16,6 @@ interface MainMVPView : MVPView {
     fun showTotal(drinks: List<Drink>, total : Double)
 
     fun onClosedBill()
+
+    fun showPlusButton()
 }
