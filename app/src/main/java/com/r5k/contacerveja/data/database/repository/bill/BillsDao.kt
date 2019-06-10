@@ -10,7 +10,7 @@ interface BillsDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bill: Bill) : Long
 
-    @Query("SELECT * FROM bills")
+    @Query("SELECT * FROM bills ORDER BY date DESC")
     fun loadAllBills() : List<Bill>
 
     @Query("SELECT * FROM bills WHERE status=:state")
