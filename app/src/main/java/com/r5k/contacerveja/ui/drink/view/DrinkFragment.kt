@@ -88,9 +88,9 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
 
         // https://stackoverflow.com/questions/10695103/creating-custom-alertdialog-what-is-the-root-view
         // Seems ok to inflate view with null rootView
-        val view = layoutInflater.inflate(com.r5k.contacerveja.R.layout.dialog_new_drink, null)
+        val view = layoutInflater.inflate(R.layout.dialog_new_drink, null)
 
-        val newDrinkEditText = view.findViewById(com.r5k.contacerveja.R.id.edt_new_drink_name) as TextInputEditText
+        val newDrinkEditText = view.findViewById(R.id.edt_new_drink_name) as TextInputEditText
 
         newDrinkEditText.setText(mDrink!!.name)
 
@@ -101,7 +101,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
             val newDrinkName = newDrinkEditText.text
             var isValid = true
             if (newDrinkName!!.isBlank()) {
-                newDrinkEditText.error = getString(com.r5k.contacerveja.R.string.validation_empty)
+                newDrinkEditText.error = getString(R.string.validation_empty)
                 isValid = false
             }
 
