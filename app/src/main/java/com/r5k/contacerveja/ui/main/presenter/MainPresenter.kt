@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
-class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal constructor(interactor: I) : BasePresenter<V,I>(interactor = interactor),MainMVPPresenter<V,I>{
+class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal constructor(interactor: I) : BasePresenter<V,I>(interactor = interactor),MainMVPPresenter<V,I>{
 
     private val TAG = MainPresenter::class.java.simpleName
 

@@ -5,13 +5,12 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.ui.base.BaseInteractor
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
-                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainVMPInteractor{
+                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainMVPInteractor{
 
     private var mOpenedBillId: Long = -1
 

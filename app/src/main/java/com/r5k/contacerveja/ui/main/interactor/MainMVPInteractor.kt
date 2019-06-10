@@ -5,7 +5,7 @@ import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.MVPInteractor
 import kotlinx.coroutines.Deferred
 
-interface MainVMPInteractor : MVPInteractor{
+interface MainMVPInteractor : MVPInteractor{
 
     // todo change return
     fun getBillData()
