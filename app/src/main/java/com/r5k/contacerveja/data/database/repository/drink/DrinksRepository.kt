@@ -6,8 +6,8 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
 
     override fun isDrinksRepoEmpty(): Boolean = drinksDao.loadAll().isEmpty()
 
-    override fun insertDrink(drinks: Drink): Long  {
-        return drinksDao.insert(drinks)
+    override fun insertDrink(drinksRepo: Drink): Long  {
+        return drinksDao.insert(drinksRepo)
     }
 
     override fun loadDrinks(): List<Drink> =  drinksDao.loadAll()
