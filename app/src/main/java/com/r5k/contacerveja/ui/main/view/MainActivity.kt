@@ -130,4 +130,11 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         builder.show()
     }
 
+    fun updateTitle(drink : Drink){
+        fragmentAdapter.updateDrinkName(drink)
+    }
+
+    fun removeDrinkFragment(drink : Drink){
+        fragmentAdapter.removeDrinkFragment(drink)
+    }
 }

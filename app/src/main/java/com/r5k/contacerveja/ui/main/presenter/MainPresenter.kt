@@ -19,6 +19,10 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
 
         Log.d(TAG,"called onAttach")
 
+        loadDrinks()
+    }
+
+    override fun loadDrinks() {
         GlobalScope.launch(context = Dispatchers.Main) {
 
             val openedBills = withContext(context = Dispatchers.IO) {

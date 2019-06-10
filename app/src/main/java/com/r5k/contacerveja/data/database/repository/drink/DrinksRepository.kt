@@ -19,4 +19,8 @@ class DrinksRepository @Inject constructor(private val drinksDao: DrinksDao) :Dr
     override fun updateDrink(drink: Drink): Int {
         return drinksDao.updateDrink(drink)
     }
+
+    override fun deleteDrink(drink: Drink) : Int{
+        return drinksDao.deleteDrink(drink)
+    }
 }

@@ -28,6 +28,10 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
         interactor!!.negQntForDrink(drink)?.let { updateDrinkInfoInDb(it) }
     }
 
+    override fun onUpdateDrinkName(drink: Drink) {
+        updateDrinkInfoInDb(drink)
+    }
+
     private fun updateDrinkInfoInDb(drink: Drink) {
         Log.d(TAG,"updateDrinkInfoInDb -drink=$drink")
         Log.d(TAG,"updateDrinkInfoInDb -interactor=$interactor")
@@ -47,4 +51,19 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
         }
     }
 
+    override fun onDeleteDrink(drink: Drink) {
+        GlobalScope.launch(context = Dispatchers.Main) {
+
+            val afectedRows = withContext(context = Dispatchers.IO) {
+                interactor!!.deleteDrink(drink).await()
+            }
+
+            Log.d(TAG,"onDeleteDrink -afectedRows =$afectedRows")
+            if (afectedRows >0){
+                getView()?.onDeletedDrink(drink)
+            } else {
+                Log.e(TAG,"onDeleteDrink nao fez delete do drink")
+            }
+        }
+    }
 }
