@@ -3,9 +3,8 @@ package com.r5k.contacerveja.ui.main.presenter
 import android.util.Log
 import com.r5k.contacerveja.data.database.repository.bill.Bill
 import com.r5k.contacerveja.data.database.repository.bill.BillState
-import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BasePresenter
-import com.r5k.contacerveja.ui.main.interactor.MainVMPInteractor
+import com.r5k.contacerveja.ui.main.interactor.MainMVPInteractor
 import com.r5k.contacerveja.ui.main.view.MainMVPView
 import kotlinx.coroutines.*
 import java.util.*
@@ -15,38 +14,7 @@ class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal const
 
     private val TAG = MainPresenter::class.java.simpleName
 
-    override fun onAttach(view: V?) {
-        super.onAttach(view)
-
-        Log.d(TAG,"called onAttach")
-
-        loadDrinks()
-    }
-
-    override fun loadDrinks() {
-        GlobalScope.launch(context = Dispatchers.Main) {
-
-            val openedBills = withContext(context = Dispatchers.IO) {
-                interactor!!.getOpenedBill().await()
-            }
-
             Log.d(TAG, "opened biils = $openedBills")
-
-            if (openedBills.isEmpty()) {
-                getView()?.showPlusButton()
-            } else {
-                Log.d(TAG, "openedBills.size=" + openedBills.size)
-                if (openedBills.size == 1) {
-                    openedBills[0].id.let { loadDrinksFromBillId(openedBills[0].id!!) }
-                } else {
-                    Log.e(TAG, "algo está muito errado era para ter somente uma conta aberta !!!")
-                }
-            }
-        }
-    }
-
-
-
     override fun createBill() {
         Log.d(TAG,"called createBill")
 

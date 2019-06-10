@@ -20,6 +20,7 @@ import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
 import com.r5k.contacerveja.ui.main.interactor.DefaultDrinksForBill
 import com.r5k.contacerveja.ui.main.interactor.MainInteractor
 import com.r5k.contacerveja.ui.main.presenter.MainMVPPresenter
+import com.r5k.contacerveja.util.AppConstants
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -30,7 +31,6 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
 
 
     private val TAG = MainActivity::class.java.simpleName
-    var hasOpenedBill = false
 
     @Inject
     internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainInteractor>
@@ -53,6 +53,14 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
 
         presenter.onAttach(this)
 
+        if (intent?.action.equals(AppConstants.ACTION_NEW_BILL)){
+            presenter.createBill()
+        } else if (intent?.action.equals(AppConstants.ACTION_LOAD_BILL)){
+            if (intent.hasExtra(AppConstants.KEY_BILL_ID)){
+                val billId = intent.getLongExtra(AppConstants.KEY_BILL_ID, -1)
+                presenter.loadDrinksFromBillId(billId)
+            }
+        }
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =
@@ -73,13 +81,11 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     }
 
     override fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill) {
-        changeFABBackground(true)
         Log.d(TAG, "loadDefaultDrinks DefaultDrinksForBill size = $drinksForBill")
         fragmentAdapter.setDrinkList(drinksForBill.drinksList)
     }
 
     override fun loadDrinksForOpenedBill(drinks: List<Drink>) {
-        changeFABBackground(true)
         Log.d(TAG, "loadDefaultDrinks size = $drinks")
         fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
@@ -159,11 +165,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.fab){
-                if (hasOpenedBill){
-                    presenter.loadTotalOfBill()
-                } else {
-                    presenter.createBill()
-                }
+                presenter.loadTotalOfBill()
             }
         }
     }
@@ -213,33 +215,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
     }
 
     override fun onClosedBill() {
-
-        showPlusButton()
-        val emptyDrinkList = mutableListOf<Drink>()
-        fragmentAdapter.setDrinkList(emptyDrinkList)
-        Toast.makeText(this,getString(R.string.toast_close_bill),Toast.LENGTH_SHORT).show()
-
+        finish()
     }
 
-    override fun showPlusButton() {
-        changeFABBackground(false)
-    }
-
-    private fun changeFABBackground(hasOpenedBill: Boolean){
-        this.hasOpenedBill = hasOpenedBill
-
-        val drawableId = if (hasOpenedBill){
-            R.drawable.ic_baseline_done_24px
-        } else {
-            R.drawable.ic_add_black_24dp
-        }
-
-        val drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            resources.getDrawable(drawableId,theme)
-        } else {
-            resources.getDrawable(drawableId)
-        }
-
-        fab.setImageDrawable(drawable)
-    }
 }

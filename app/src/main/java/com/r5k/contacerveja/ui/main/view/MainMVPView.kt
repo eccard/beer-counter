@@ -17,5 +17,4 @@ interface MainMVPView : MVPView {
 
     fun onClosedBill()
 
-    fun showPlusButton()
 }

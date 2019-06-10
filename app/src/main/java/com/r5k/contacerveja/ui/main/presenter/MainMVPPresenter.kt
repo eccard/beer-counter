@@ -13,8 +13,6 @@ interface MainMVPPresenter<V :MainMVPView, I : MainMVPInteractor> : MVPPresenter
 
     fun closeBill()
 
-    fun loadDrinks()
-
     fun loadDrinksFromBillId(billId : Long)
 
     fun addNewDrink(drinkName : String)

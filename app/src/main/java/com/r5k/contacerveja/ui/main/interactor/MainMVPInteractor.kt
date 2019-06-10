@@ -10,6 +10,7 @@ interface MainMVPInteractor : MVPInteractor{
     // todo change return
     fun getBillData()
 
+    // todo remove from main Activity ?
     suspend fun getOpenedBill() : Deferred<List<Bill>>
 
     fun createBill(bill: Bill) : Boolean
