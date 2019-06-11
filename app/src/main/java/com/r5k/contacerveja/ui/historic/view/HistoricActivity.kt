@@ -30,6 +30,7 @@ class HistoricActivity : BaseActivity(), HistoricMVPView, View.OnClickListener, 
         adapter?.setClickListener(this)
         recyclerView?.adapter = adapter
         recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.addItemDecoration(SimpleDividerItemDecoration(this))
         fab_hitoric.setOnClickListener(this)
 
         presenter.onAttach(this)
