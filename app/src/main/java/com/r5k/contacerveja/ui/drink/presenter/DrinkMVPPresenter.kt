@@ -10,4 +10,5 @@ interface DrinkMVPPresenter<V : DrinkMVPView, I : DrinkMVPInteractor> : MVPPrese
     fun onNegDrinkSelected(drink : Drink)
     fun onUpdateDrinkName(drink : Drink)
     fun onDeleteDrink(drink : Drink)
+    fun changeDrinkAmount(drink : Drink, amount :Int)
 }
