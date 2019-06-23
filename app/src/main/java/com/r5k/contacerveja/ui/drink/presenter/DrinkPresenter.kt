@@ -54,15 +54,28 @@ class DrinkPresenter<V : DrinkMVPView, I : DrinkMVPInteractor>
     override fun onDeleteDrink(drink: Drink) {
         GlobalScope.launch(context = Dispatchers.Main) {
 
-            val afectedRows = withContext(context = Dispatchers.IO) {
+            val affectedRows = withContext(context = Dispatchers.IO) {
                 interactor!!.deleteDrink(drink).await()
             }
 
-            Log.d(TAG,"onDeleteDrink -afectedRows =$afectedRows")
-            if (afectedRows >0){
+            Log.d(TAG,"onDeleteDrink -afectedRows =$affectedRows")
+            if (affectedRows >0){
                 getView()?.onDeletedDrink(drink)
             } else {
                 Log.e(TAG,"onDeleteDrink nao fez delete do drink")
+            }
+        }
+    }
+
+    override fun changeDrinkAmount(drink: Drink, amount: Int) {
+        GlobalScope.launch(context = Dispatchers.Main) {
+            val affectedRows = withContext(context = Dispatchers.IO) {
+                interactor!!.changeDrinkAmount(drink, amount).await()
+            }
+            if (affectedRows > 0){
+                getView()!!.displayTotal(amount.toString())
+            } else {
+                Log.e(TAG,"changeDrinkAmount from=${drink.qnt} to=${amount}")
             }
         }
     }
