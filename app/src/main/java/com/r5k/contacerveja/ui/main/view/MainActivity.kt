@@ -73,7 +73,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
 
-    override fun loadDrink(drink: Drink) {
+    override fun addNewDrink(drink: Drink) {
         fragmentAdapter.addDrink(drink)
     }
 
@@ -116,9 +116,6 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
             if (isValid) {
                 Log.d(TAG, "Adding newDrinkName $newDrinkName")
                 presenter.addNewDrink(newDrinkName.toString())
-            }
-
-            if (isValid) {
                 dialog.dismiss()
             }
         }
@@ -129,6 +126,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 
         builder.show()
     }
+
 
     fun updateTitle(drink : Drink){
         fragmentAdapter.updateDrinkName(drink)

@@ -29,7 +29,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                 interactor!!.getOpenedBill().await()
             }
 
-            Log.d(TAG, "opened biils = " + openedBills.toString())
+            Log.d(TAG, "opened biils = $openedBills")
 
             if (openedBills.isEmpty()) {
                 Log.d(TAG, "before create bill")
@@ -83,7 +83,7 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
                 interactor!!.loadDrinksFromBillId(billId).await()
             }
 
-            Log.d(TAG,"loadDrinksFromBillId drinks size="+drinksFromBill.size)
+            Log.d(TAG,"loadDrinksFromBillId drinks size=$drinksFromBill.size")
             getView()?.loadDrinksForOpenedBill(drinksFromBill)
 
         }
@@ -99,8 +99,8 @@ class MainPresenter<V:MainMVPView, I : MainVMPInteractor> @Inject internal const
             val drinkIdIn = withContext(context = Dispatchers.IO) {
                 interactor!!.addDrink(drinkName).await()
             }
-            Log.d(TAG,"addNewDrink drinkIdInBd="+drinkIdIn)
-            getView()!!.loadDrink(drinkIdIn)
+            Log.d(TAG,"addNewDrink drinkIdInBd=$drinkIdIn")
+            getView()!!.addNewDrink(drinkIdIn)
 
         }
     }

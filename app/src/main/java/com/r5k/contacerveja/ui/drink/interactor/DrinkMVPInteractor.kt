@@ -9,4 +9,5 @@ interface DrinkMVPInteractor : MVPInteractor {
     fun plusQntForDrink(drink : Drink) : Drink
     fun negQntForDrink(drink : Drink) : Drink?
     suspend fun deleteDrink(drink : Drink) : Deferred<Int>
+    suspend fun changeDrinkAmount(drink : Drink, amount : Int) : Deferred<Int>
 }

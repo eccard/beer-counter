@@ -2,6 +2,7 @@
     <string name="app_name">Conta Cerveja</string>
     <string name="add_drink">Add drink</string>
     <string name="hint_text_add_drink">Drink name</string>
+    <string name="hint_text_change_amount">New Amount</string>
     <string name="validation_empty">Empty drink name</string>
     <string name="edit_drink">Edit Drink</string>
     <string name="delete_drink">Delete Drink</string>
