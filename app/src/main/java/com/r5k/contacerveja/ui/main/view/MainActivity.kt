@@ -122,7 +122,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         builder.setView(view)
 
         // set up the ok button
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
             val newDrinkName = newDrinkEditText.text
             var isValid = true
             if (newDrinkName!!.isBlank()) {
@@ -137,7 +137,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
             }
         }
 
-        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _->
             dialog.cancel()
         }
 
@@ -207,7 +207,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         builder.setView(view)
 
         // set up the ok button
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
             presenter.closeBill()
         }
 
