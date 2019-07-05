@@ -14,7 +14,6 @@ class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal const
 
     private val TAG = MainPresenter::class.java.simpleName
 
-            Log.d(TAG, "opened biils = $openedBills")
     override fun createBill() {
         Log.d(TAG,"called createBill")
 
