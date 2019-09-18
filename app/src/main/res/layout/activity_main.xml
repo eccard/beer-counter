@@ -35,8 +35,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_margin="16dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-            app:srcCompat="@drawable/ic_baseline_done_24px"
     />
+            <!--app:srcCompat="@drawable/ic_baseline_done_24px"-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"

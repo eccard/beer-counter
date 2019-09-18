@@ -1,14 +1,18 @@
 package com.r5k.contacerveja.ui.main.view
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,6 +30,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
 
 class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -50,6 +55,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         tabs_main.setupWithViewPager(viewpager_main)
         bottom_nav.setOnNavigationItemSelectedListener(this)
         fab.setOnClickListener(this)
+
 
         presenter.onAttach(this)
 
@@ -218,4 +224,42 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         finish()
     }
 
+    override fun onBillLoadedStatus(isOpened: Boolean) {
+        val text : String
+        val color : Int
+
+        if (isOpened){
+            text = "Close"
+            color = android.R.color.holo_red_light
+        } else {
+            color = android.R.color.holo_green_light
+            text = "Open"
+        }
+
+        fab.setTextBitmap(text,300f, Color.WHITE)
+    }
+
+    fun ImageView.setTextBitmap(text: String, textSize: Float, textColor: Int) {
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.textSize = textSize
+        paint.color = textColor
+        paint.textAlign = Paint.Align.LEFT
+        val lines = text.split("\n")
+        var maxWidth = 0
+        for (line in lines) {
+            val width = paint.measureText(line).toInt()
+            if (width > maxWidth) {
+                maxWidth = width
+            }
+        }
+        val height = paint.descent() - paint.ascent()
+        val bitmap = Bitmap.createBitmap(maxWidth, height.toInt() * lines.size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        var y = - paint.ascent()
+        for (line in lines) {
+            canvas.drawText(line, 0f, y, paint)
+            y += height
+        }
+        setImageBitmap(bitmap)
+    }
 }
