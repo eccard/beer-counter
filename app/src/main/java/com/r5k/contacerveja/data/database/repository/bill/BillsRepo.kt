@@ -13,4 +13,6 @@ interface BillsRepo{
 
     fun closeBil(billId: Long) : Int
 
+    fun checkIfBillIsOpened(billId: Long) : Boolean
+
 }

@@ -32,6 +32,7 @@ class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal const
                     Log.d(TAG,"=$it")
                 }
 
+                checkIfBillIsOpened()
                 getView()?.loadDefaultDrinks(defaultDrinks)
 
             } else {
@@ -50,6 +51,7 @@ class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal const
                 interactor!!.loadDrinksFromBillId(billId).await()
             }
 
+            checkIfBillIsOpened()
             Log.d(TAG,"loadDrinksFromBillId drinks size=$drinksFromBill.size")
             getView()?.loadDrinksForOpenedBill(drinksFromBill)
 
@@ -101,5 +103,18 @@ class MainPresenter<V:MainMVPView, I : MainMVPInteractor> @Inject internal const
             }
 
         }
+    }
+
+    override fun checkIfBillIsOpened() {
+
+        GlobalScope.launch(context = Dispatchers.Main) {
+
+            val isBillOpened =  withContext(context = Dispatchers.IO){
+                interactor!!.checkIfBillIsOpened().await()
+            }
+
+            getView()?.onBillLoadedStatus(isBillOpened)
+        }
+
     }
 }

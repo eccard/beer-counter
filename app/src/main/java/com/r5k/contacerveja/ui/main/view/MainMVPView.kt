@@ -17,4 +17,6 @@ interface MainMVPView : MVPView {
 
     fun onClosedBill()
 
+    fun onBillLoadedStatus(isOpened : Boolean)
+
 }
