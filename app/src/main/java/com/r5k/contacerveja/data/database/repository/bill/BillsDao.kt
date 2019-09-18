@@ -22,6 +22,7 @@ interface BillsDao{
     @Query("UPDATE bills SET status=:state WHERE id=:billId")
     fun updateBillState(billId : Long,state : Int) : Int
 
-
+    @Query("SELECT  status from bills WHERE id=:billId")
+    fun checkIfBillIsOpened(billId : Long) : Int
 
 }

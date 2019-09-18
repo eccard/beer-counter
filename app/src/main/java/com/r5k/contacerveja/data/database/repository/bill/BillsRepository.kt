@@ -17,4 +17,8 @@ class BillsRepository @Inject constructor(private val billsDao: BillsDao) : Bill
     override fun closeBil(billId: Long): Int {
         return billsDao.updateBillState(billId,BillState.CLOSED.ordinal)
     }
+
+    override fun checkIfBillIsOpened(billId: Long): Boolean {
+        return billsDao.checkIfBillIsOpened(billId) == BillState.OPEN.ordinal
+    }
 }

@@ -19,4 +19,5 @@ interface MainMVPPresenter<V :MainMVPView, I : MainMVPInteractor> : MVPPresenter
 
     fun loadTotalOfBill()
 
+    fun checkIfBillIsOpened()
 }

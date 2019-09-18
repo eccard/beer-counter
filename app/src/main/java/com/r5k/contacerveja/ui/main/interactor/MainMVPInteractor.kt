@@ -17,6 +17,8 @@ interface MainMVPInteractor : MVPInteractor{
 
     fun closeBill() : Deferred<Int>
 
+    fun checkIfBillIsOpened() : Deferred<Boolean>
+
     suspend fun loadDrinksFromBillId(billId : Long) : Deferred<List<Drink>>
 
     suspend fun createBillAndDefaultDrinks(bill : Bill) : Deferred<DefaultDrinksForBill>

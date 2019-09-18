@@ -5,6 +5,7 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.ui.base.BaseInteractor
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
@@ -84,5 +85,9 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 
     override fun closeBill() = GlobalScope.async {
         billsRepository.closeBil(mOpenedBillId)
+    }
+
+    override fun checkIfBillIsOpened()  = GlobalScope.async {
+        billsRepository.checkIfBillIsOpened(mOpenedBillId)
     }
 }
