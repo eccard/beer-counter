@@ -5,13 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
@@ -27,7 +24,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 
 
     private val TAG = MainActivity::class.java.simpleName
@@ -48,8 +45,6 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         viewpager_main.adapter = fragmentAdapter
 
         tabs_main.setupWithViewPager(viewpager_main)
-        bottom_nav.setOnNavigationItemSelectedListener(this)
-        fab.setOnClickListener(this)
 
         presenter.onAttach(this)
 
@@ -105,6 +100,11 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
                 showAddDrinkDialog()
                 true
             }
+
+            R.id.action_close_bill -> {
+                presenter.loadTotalOfBill()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -153,23 +153,6 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         fragmentAdapter.removeDrinkFragment(drink)
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        when (p0.itemId){
-            R.id.navigation_history -> 1
-            else -> 2
-        }
-
-        return true
-    }
-
-    override fun onClick(v: View?) {
-        if (v != null) {
-            if (v.id == R.id.fab){
-                presenter.loadTotalOfBill()
-            }
-        }
-    }
-
     override fun showTotal(drinks: List<Drink>, total: Double) {
         val context = this
         val builder = AlertDialog.Builder(context)
@@ -210,6 +193,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector, Bo
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             presenter.closeBill()
         }
+        builder.setNegativeButton(android.R.string.cancel){ dialog, _ -> dialog.dismiss() }
 
         builder.show()
     }
