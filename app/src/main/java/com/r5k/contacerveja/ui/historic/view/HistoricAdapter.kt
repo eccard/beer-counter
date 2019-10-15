@@ -1,12 +1,14 @@
 package com.r5k.contacerveja.ui.historic.view
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.r5k.contacerveja.data.database.repository.bill.Bill
+import com.r5k.contacerveja.data.database.repository.bill.BillState
 import java.text.SimpleDateFormat
 
 class HistoricAdapter(val context: Context): RecyclerView.Adapter<HistoricAdapter.ViewHolder>() {
@@ -64,7 +66,17 @@ class HistoricAdapter(val context: Context): RecyclerView.Adapter<HistoricAdapte
             this.billClickListener = billClickListener
             bill?.let {
                 title.text = SimpleDateFormat.getInstance().format(it.date)
-                description.text = it.status.toString()
+                val descrition :String
+                val color : Int
+                if (it.status == BillState.OPEN.ordinal){
+                    descrition = "Opened"
+                    color = Color.MAGENTA
+                } else {
+                    descrition = "Closed"
+                    color = Color.BLACK
+                }
+                description.text = descrition
+                description.setTextColor(color)
                 this.billId = bill.id
             }
         }
