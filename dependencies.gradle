@@ -20,7 +20,8 @@ ext {
     def room_version = "2.1.0"
     room = [
             runtime : "androidx.room:room-runtime:$room_version",
-            compiler : "android.arch.persistence.room:compiler:$room_version" ]
+            compiler : "androidx.room:room-compiler:$room_version"
+    ]
 
     def dagger2_version = '2.23.2'
     dagger2 = [
