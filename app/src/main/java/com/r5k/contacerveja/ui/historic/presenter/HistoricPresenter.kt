@@ -15,10 +15,10 @@ class HistoricPresenter<V : HistoricMVPView, I :HistoricMVPInteractor> @Inject i
     override fun onAttach(view: V?) {
         super.onAttach(view)
 
-        loadBiils()
+        loadBills()
     }
 
-    override fun loadBiils() {
+    override fun loadBills() {
 
         GlobalScope.launch(context = Dispatchers.Main) {
 

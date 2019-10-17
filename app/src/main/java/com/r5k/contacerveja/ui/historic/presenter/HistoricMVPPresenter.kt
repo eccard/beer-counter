@@ -6,5 +6,5 @@ import com.r5k.contacerveja.ui.historic.view.HistoricMVPView
 
 interface HistoricMVPPresenter<V : HistoricMVPView, I : HistoricMVPInteractor> : MVPPresenter<V,I> {
 
-    fun loadBiils()
+    fun loadBills()
 }

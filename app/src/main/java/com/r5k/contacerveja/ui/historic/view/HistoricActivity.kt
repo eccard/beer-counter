@@ -39,7 +39,7 @@ class HistoricActivity : BaseActivity(), HistoricMVPView, View.OnClickListener, 
     override fun onResume() {
         super.onResume()
 
-        presenter.loadBiils()
+        presenter.loadBills()
 
     }
 
