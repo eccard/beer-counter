@@ -202,4 +202,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         finish()
     }
 
+    override fun onBillLoadedStatus(isOpened: Boolean) {
+        Log.d(TAG,"onBillLoadedStatus isOpened=$isOpened")
+    }
 }
