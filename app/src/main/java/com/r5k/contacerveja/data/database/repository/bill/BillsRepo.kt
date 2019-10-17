@@ -11,7 +11,7 @@ interface BillsRepo{
 
     fun loadOpenedBills() : List<Bill>
 
-    fun closeBil(billId: Long) : Int
+    fun closeBill(billId: Long) : Int
 
     fun checkIfBillIsOpened(billId: Long) : Boolean
 
