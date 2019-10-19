@@ -4,14 +4,13 @@ import com.r5k.contacerveja.ui.drink.DrinkFragmentProvider
 import com.r5k.contacerveja.ui.historic.HistoricActivityModule
 import com.r5k.contacerveja.ui.historic.view.HistoricActivity
 import com.r5k.contacerveja.ui.main.view.MainActivity
-import com.r5k.contacerveja.ui.main.MainActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class ActivityBuilder{
 
-    @ContributesAndroidInjector(modules = [(MainActivityModule::class),(DrinkFragmentProvider::class)])
+    @ContributesAndroidInjector(modules = [DrinkFragmentProvider::class])
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector(modules = [(HistoricActivityModule::class)])
