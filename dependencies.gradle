@@ -17,12 +17,13 @@ ext {
     ]
 
 
-    def room_version = "2.1.0-alpha07"
+    def room_version = "2.1.0"
     room = [
             runtime : "androidx.room:room-runtime:$room_version",
-            compiler : "android.arch.persistence.room:compiler:$room_version" ]
+            compiler : "androidx.room:room-compiler:$room_version"
+    ]
 
-    def dagger2_version = '2.22'
+    def dagger2_version = '2.23.2'
     dagger2 = [
             core: "com.google.dagger:dagger:$dagger2_version",
             dagger_android : "com.google.dagger:dagger-android-support:$dagger2_version",
@@ -31,7 +32,7 @@ ext {
     ]
 
 
-    def kotlinCoroutines_version = '1.2.1'
+    def kotlinCoroutines_version = '1.2.2'
     kotlinCoroutines = [
             core : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version",
             android : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"
@@ -39,8 +40,8 @@ ext {
 
 
 
-    def espresso_version = '3.1.0-alpha4'
-    def runner_version = '1.1.0-alpha4'
+    def espresso_version = '3.2.0'
+    def runner_version = '1.2.0'
     androidTest = [
             espresso_core: "androidx.test.espresso:espresso-core:$espresso_version",
             runner: "androidx.test:runner:$runner_version"

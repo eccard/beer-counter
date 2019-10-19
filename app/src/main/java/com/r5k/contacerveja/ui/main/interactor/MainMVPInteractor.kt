@@ -5,14 +5,19 @@ import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.MVPInteractor
 import kotlinx.coroutines.Deferred
 
-interface MainVMPInteractor : MVPInteractor{
+interface MainMVPInteractor : MVPInteractor{
 
     // todo change return
     fun getBillData()
 
+    // todo remove from main Activity ?
     suspend fun getOpenedBill() : Deferred<List<Bill>>
 
     fun createBill(bill: Bill) : Boolean
+
+    fun closeBill() : Deferred<Int>
+
+    fun checkIfBillIsOpened() : Deferred<Boolean>
 
     suspend fun loadDrinksFromBillId(billId : Long) : Deferred<List<Drink>>
 
@@ -20,4 +25,7 @@ interface MainVMPInteractor : MVPInteractor{
 
     suspend fun addDrink(drinkName : String) : Deferred<Drink>
 
+    suspend fun loadDrinksFromOpenedBill() : Deferred<List<Drink>>
+
+    suspend fun callTotalOfBill(drinks :List<Drink>) : Deferred<Double>
 }

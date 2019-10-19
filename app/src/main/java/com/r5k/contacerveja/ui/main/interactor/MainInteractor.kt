@@ -5,19 +5,18 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
 import com.r5k.contacerveja.ui.base.BaseInteractor
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
-                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainVMPInteractor{
+                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainMVPInteractor{
 
     private var mOpenedBillId: Long = -1
 
     override fun getBillData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        billsRepository.loadBiils()
+//        billsRepository.loadBills()
     }
 
 
@@ -33,7 +32,7 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
 
 
     override suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
-        mOpenedBillId = billsRepository.insertBiil(bill)
+        mOpenedBillId = billsRepository.insertBill(bill)
 
         val drink1Name = "Cerveja Brama"
         val drink2Name = "Vinho"
@@ -67,5 +66,27 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         Drink(drinkId,drinkName,null,0,mOpenedBillId)
     }
 
+    override suspend fun loadDrinksFromOpenedBill() = GlobalScope.async {
+        drinksRepoHelper.loadDrinksFromBillId(mOpenedBillId)
+    }
 
+    override suspend fun callTotalOfBill(drinks: List<Drink>) = GlobalScope.async {
+
+        var total: Double = 0.0
+
+        drinks.forEach {
+            if (it.price != null) {
+                total += it.qnt * it.price.toDouble()
+            }
+        }
+        total
+    }
+
+    override fun closeBill() = GlobalScope.async {
+        billsRepository.closeBill(mOpenedBillId)
+    }
+
+    override fun checkIfBillIsOpened()  = GlobalScope.async {
+        billsRepository.checkIfBillIsOpened(mOpenedBillId)
+    }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rootView"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/nestedScrollView">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/historic_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_hitoric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior=".ui.historic.view.ScrollAwareFABBehavior"
+            app:layout_anchor="@+id/nestedScrollView"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

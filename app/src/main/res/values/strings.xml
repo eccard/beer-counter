@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Conta Cerveja</string>
+    <string name="app_name">Count Beer</string>
     <string name="add_drink">Add drink</string>
     <string name="hint_text_add_drink">Drink name</string>
     <string name="hint_text_change_amount">New Amount</string>
@@ -8,4 +8,8 @@
     <string name="delete_drink">Delete Drink</string>
     <string name="delete_drink_alert_message">Are you sure delete drink</string>
     <string name="delete_drink_alert_title">Dink deletion</string>
+    <string name="total">Total</string>
+    <string name="historic">Historic</string>
+    <string name="favorites">Favorites</string>
+    <string name="toast_close_bill">Closed bill</string>
 </resources>

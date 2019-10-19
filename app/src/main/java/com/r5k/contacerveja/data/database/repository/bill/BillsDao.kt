@@ -1,9 +1,6 @@
 package com.r5k.contacerveja.data.database.repository.bill
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface BillsDao{
@@ -13,11 +10,19 @@ interface BillsDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bill: Bill) : Long
 
-    @Query("SELECT * FROM bills")
+    @Query("SELECT * FROM bills ORDER BY date DESC")
     fun loadAllBills() : List<Bill>
 
-    @Query("SELECT * FROM bills WHERE status=1")
-    fun loadOpenedBill() : List<Bill>
+    @Query("SELECT * FROM bills WHERE status=:state")
+    fun loadBillWithState(state : Int) : List<Bill>
 
+    @Update
+    fun updateBill(bill : Bill) : Int
+
+    @Query("UPDATE bills SET status=:state WHERE id=:billId")
+    fun updateBillState(billId : Long,state : Int) : Int
+
+    @Query("SELECT  status from bills WHERE id=:billId")
+    fun checkIfBillIsOpened(billId : Long) : Int
 
 }

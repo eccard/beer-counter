@@ -41,7 +41,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         super.onCreate(savedInstanceState)
         mDrink = arguments?.getParcelable(MY_DRINK)
         setHasOptionsMenu(true)
-        mContext = this!!.activity!!
+        mContext = this.activity!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -101,7 +101,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         builder!!.setView(view)
 
         // set up the ok button
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
             val newDrinkName = newDrinkEditText.text
             var isValid = true
             if (newDrinkName!!.isBlank()) {
@@ -121,7 +121,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
             }
         }
 
-        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -153,11 +153,11 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         builder!!.setMessage(getString(R.string.delete_drink_alert_title))
         builder.setMessage("""${getString(R.string.delete_drink_alert_message)} ${mDrink!!.name}?""")
 
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
             presenter.onDeleteDrink(mDrink!!)
         }
 
-        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
             dialog.cancel()
         }
 
@@ -178,7 +178,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
 
         builder.setView(view)
 
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
             val newAmount = amountEditText.text
             var isValid = true
             if (newAmount!!.isBlank()) {
@@ -193,7 +193,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
             }
         }
 
-        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
             dialog.cancel()
         }
 

@@ -5,10 +5,14 @@ interface BillsRepo{
 
     fun isBillsReposEmpty() : Boolean
 
-    fun insertBiil(bill: Bill) : Long
+    fun insertBill(bill: Bill) : Long
 
-    fun loadBiils() : List<Bill>
+    fun loadBills() : List<Bill>
 
     fun loadOpenedBills() : List<Bill>
+
+    fun closeBill(billId: Long) : Int
+
+    fun checkIfBillIsOpened(billId: Long) : Boolean
 
 }
