@@ -8,18 +8,28 @@ import com.google.android.material.textfield.TextInputEditText
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.base.BaseFragment
-import com.r5k.contacerveja.ui.drink.interactor.DrinkMVPInteractor
-import com.r5k.contacerveja.ui.drink.presenter.DrinkMVPPresenter
-import kotlinx.android.synthetic.main.fragment_generic_drink.*
 import javax.inject.Inject
 import android.view.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.r5k.contacerveja.BR
+import com.r5k.contacerveja.databinding.FragmentGenericDrinkBinding
+import com.r5k.contacerveja.di.factory.ViewModelProviderFactory
 import com.r5k.contacerveja.ui.main.view.MainActivity
+import kotlinx.android.synthetic.main.fragment_generic_drink.*
 
 
-class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
+class DrinkFragment : BaseFragment<FragmentGenericDrinkBinding,DrinkViewModel>(), View.OnClickListener {
+
+    private lateinit var drinkViewModel: DrinkViewModel
+
+    @Inject
+    lateinit var factory: ViewModelProviderFactory
 
     private val TAG = DrinkFragment::class.java.simpleName
     var mContext : Context? = null
+
+    private var mDrink: Drink? = null
 
     companion object {
         private const val MY_DRINK = "drink"
@@ -32,10 +42,6 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         }
     }
 
-    @Inject
-    internal lateinit var presenter : DrinkMVPPresenter<DrinkMVPView,DrinkMVPInteractor>
-
-    private var mDrink: Drink? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,15 +51,40 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_generic_drink,container,false)
+        val view = inflater.inflate(R.layout.fragment_generic_drink,container,false)
+        setupObserver()
+        return view
+    }
+
+    private fun setupObserver() {
+        drinkViewModel.newDrinkAmount.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                displayTotal(it)
+            }
+        })
+
+        drinkViewModel.deletedDrink.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                onDeletedDrink(it)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        presenter.onAttach(this)
         super.onViewCreated(view, savedInstanceState)
+        setUp()
     }
 
-    override fun setUp() {
+    override fun getLayoutId(): Int = R.layout.fragment_generic_drink
+
+    override fun getViewModel(): DrinkViewModel {
+        drinkViewModel = ViewModelProviders.of(this,factory).get(DrinkViewModel::class.java)
+        return drinkViewModel
+    }
+
+    override fun getBindingVariable(): Int = BR.viewModel
+
+    fun setUp() {
         mDrink!!.qnt.let { qnt_drink.text = it.toString() }
 
         btn_plus.setOnClickListener(this)
@@ -62,12 +93,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     }
 
 
-    override fun onDestroy() {
-        presenter.onDetach()
-        super.onDestroy()
-    }
-
-    override fun displayTotal(total: String) {
+    fun displayTotal(total: String) {
         Log.d(TAG,"displayTotal total=$total")
         qnt_drink.text = total
     }
@@ -75,10 +101,10 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_plus -> {
-                presenter.onPlusDrinkSelected(mDrink!!)
+                drinkViewModel.onPlusDrinkSelected(mDrink!!)
             }
             R.id.btn_neg -> {
-                presenter.onNegDrinkSelected(mDrink!!)
+                drinkViewModel.onNegDrinkSelected(mDrink!!)
             }
             R.id.qnt_drink -> {
                 showChangeAmountDialog(mDrink!!)
@@ -112,7 +138,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
             if (isValid) {
                 Log.d(TAG, "Edit to newDrinkName $newDrinkName")
                 val newDrink = Drink(mDrink!!.id,newDrinkName.toString(),mDrink!!.price,mDrink!!.qnt,mDrink!!.billId)
-                presenter.onUpdateDrinkName(newDrink)
+                drinkViewModel.onUpdateDrinkName(newDrink)
                 updateDrink(newDrink)
             }
 
@@ -154,7 +180,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         builder.setMessage("""${getString(R.string.delete_drink_alert_message)} ${mDrink!!.name}?""")
 
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            presenter.onDeleteDrink(mDrink!!)
+            drinkViewModel.onDeleteDrink(mDrink!!)
         }
 
         builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
@@ -164,7 +190,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
         builder.show()
     }
 
-    override fun onDeletedDrink(drink: Drink) {
+    fun onDeletedDrink(drink: Drink) {
         var mainActivity = activity as MainActivity
         mainActivity.removeDrinkFragment(drink)
     }
@@ -188,7 +214,7 @@ class DrinkFragment : BaseFragment(),DrinkMVPView, View.OnClickListener {
 
             if (isValid) {
                 Log.d(TAG, "Changing drink amount to $newAmount")
-                presenter.changeDrinkAmount(drink, newAmount.toString().toInt())
+                drinkViewModel.changeDrinkAmount(drink, newAmount.toString().toInt())
                 dialog.dismiss()
             }
         }
