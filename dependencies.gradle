@@ -6,6 +6,10 @@ ext {
     def cardView_version = '1.0.0'
     def recyclerView_version = '1.0.0'
     def legacySupport_version = '1.0.0'
+    def lifecycle_version = '2.1.0'
+    def lifecycleViewModelVersion = '2.2.0-alpha05'
+    def lifecycle_extensions = '1.1.1'
+    def liveEventVersion = '1.0.1'
     supportLibraries = [
             appcompat : "androidx.appcompat:appcompat:$supportLibraries_version",
             androidxcore : "androidx.core:core-ktx:$supportLibraries_version",
@@ -13,6 +17,10 @@ ext {
             recyclerView:  "androidx.recyclerview:recyclerview:$recyclerView_version",
             constraint : "androidx.constraintlayout:constraintlayout:$constraint_version",
             material : "com.google.android.material:material:$material_version",
+            lifecycle : "android.arch.lifecycle:extensions:$lifecycle_extensions",
+            lifecycle_ext : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
+            lifecycle_viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewModelVersion",
+            liveEvent: "com.github.hadilq.liveevent:liveevent:$liveEventVersion",
             v4 : "androidx.legacy:legacy-support-v4:$legacySupport_version"
     ]
 
