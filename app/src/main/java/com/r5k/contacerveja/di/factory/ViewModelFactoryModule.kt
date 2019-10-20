@@ -3,6 +3,7 @@ package com.r5k.contacerveja.di.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.r5k.contacerveja.ui.drink.view.DrinkViewModel
+import com.r5k.contacerveja.ui.historic.view.HistoricViewModel
 import com.r5k.contacerveja.ui.main.view.MainViewModel
 import dagger.Binds
 import dagger.Module
@@ -24,7 +25,11 @@ abstract class ViewModelFactoryModule {
     @Singleton
     abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
-
+    @Binds
+    @IntoMap
+    @ViewModelKey(HistoricViewModel::class)
+    @Singleton
+    abstract fun bindHistoricViewModel(historicViewModel: HistoricViewModel) : ViewModel
 
     @Binds
     @Singleton
