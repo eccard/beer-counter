@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.hadilq.liveevent.LiveEvent
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.drink.interactor.DrinkInteractor
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +15,8 @@ import javax.inject.Inject
 
 class DrinkViewModel @Inject constructor(private val interactor: DrinkInteractor) : ViewModel() {
 
-    private val _newDrinkAmount = LiveEvent<String>()
-    private val _deletedDrink = LiveEvent<Drink>()
+    private val _newDrinkAmount = MutableLiveData<String>()
+    private val _deletedDrink = MutableLiveData<Drink>()
 
     val newDrinkAmount : LiveData<String> = _newDrinkAmount
     val deletedDrink : LiveData<Drink> = _deletedDrink
