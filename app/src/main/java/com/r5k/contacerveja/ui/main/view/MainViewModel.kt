@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.r5k.contacerveja.data.database.repository.bill.Bill
+import com.r5k.contacerveja.data.database.repository.bill.BillState
 import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
@@ -86,7 +87,7 @@ class MainViewModel @Inject constructor(
     fun createBill() {
         Log.d(TAG,"called createBill")
 
-        var bill = Bill(null, Calendar.getInstance().time.time,1)
+        var bill = Bill(null, Calendar.getInstance().time.time,BillState.OPEN.ordinal)
 
         viewModelScope.launch(context = Dispatchers.Main) {
 
