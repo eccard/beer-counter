@@ -7,6 +7,6 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class DrinkFragmentProvider {
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [DrinkFragmentModule::class])
     abstract fun provideDrinkFragment(): DrinkFragment
 }

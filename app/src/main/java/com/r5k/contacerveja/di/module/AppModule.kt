@@ -46,15 +46,4 @@ class AppModule {
     internal fun provideBillsRepoHelper(appDatabase: AppDatabase): BillsRepo = BillsRepository(appDatabase.billsDao())
 
 
-
-    @Provides
-    @Singleton
-    internal fun provideMainInteractor(drinksRepository: DrinksRepository,billsRepository: BillsRepository) =
-        MainInteractor(drinksRepository,billsRepository)
-
-    @Provides
-    @Singleton
-    internal fun provideDrinkInteractor(drinksRepository: DrinksRepository) = DrinkInteractor(drinksRepository)
-
-
 }
