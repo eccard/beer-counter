@@ -22,13 +22,11 @@ abstract class ViewModelFactoryModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    @Singleton
     abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(HistoricViewModel::class)
-    @Singleton
     abstract fun bindHistoricViewModel(historicViewModel: HistoricViewModel) : ViewModel
 
     @Binds
