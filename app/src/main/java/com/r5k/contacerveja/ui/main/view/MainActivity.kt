@@ -97,6 +97,10 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
                 loadDrinksForOpenedBill(it)
             }
         })
+
+        mainViewModel.billClosed.observe(this, Observer {
+
+        })
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =

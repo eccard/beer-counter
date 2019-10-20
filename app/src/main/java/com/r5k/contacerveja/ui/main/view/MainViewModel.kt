@@ -22,12 +22,14 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _defaultDrinks = MutableLiveData<DefaultDrinksForBill>()
+    private var _billClosed = MutableLiveData<Boolean>()
     private var  _drinksForOpenedBill = MutableLiveData<List<Drink>>()
     private var _newDrink = MutableLiveData<Drink>()
 
     val defaultDrinks: LiveData<DefaultDrinksForBill> = _defaultDrinks
     val drinksForOpenedBill: LiveData<List<Drink>> = _drinksForOpenedBill
     val newDrink: LiveData<Drink> = _newDrink
+    val billClosed: LiveData<Boolean> = _billClosed
 
     private val TAG = MainViewModel::class.java.simpleName
 
@@ -36,6 +38,7 @@ class MainViewModel @Inject constructor(
         _defaultDrinks.value = null
         _drinksForOpenedBill.value = null
         _newDrink.value = null
+        _billClosed.value = false
         loadDrinks()
     }
 
@@ -63,6 +66,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun closeBill() {
+
+        viewModelScope.launch(context = Dispatchers.Main) {
+
+            val affectedCollumns = withContext(context = Dispatchers.IO) {
+                interactor.closeBill().await()
+            }
+
+            if (affectedCollumns > 0){
+                _billClosed.postValue(true)
+//                getView().onClosedBill()
+            }
+
+        }
+    }
 
 
     fun createBill() {
@@ -128,6 +146,7 @@ class MainViewModel @Inject constructor(
         _newDrink.value = null
         _drinksForOpenedBill.value = null
         _defaultDrinks.value = null
+        _billClosed.value = false
     }
 
 }
