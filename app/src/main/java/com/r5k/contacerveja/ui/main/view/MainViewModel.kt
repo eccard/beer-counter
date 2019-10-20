@@ -26,11 +26,13 @@ class MainViewModel @Inject constructor(
     private var _billClosed = MutableLiveData<Boolean>()
     private var  _drinksForOpenedBill = MutableLiveData<List<Drink>>()
     private var _newDrink = MutableLiveData<Drink>()
+    private var _showTotal = MutableLiveData<Pair<List<Drink>,Double>>()
 
     val defaultDrinks: LiveData<DefaultDrinksForBill> = _defaultDrinks
     val drinksForOpenedBill: LiveData<List<Drink>> = _drinksForOpenedBill
     val newDrink: LiveData<Drink> = _newDrink
     val billClosed: LiveData<Boolean> = _billClosed
+    val showTotal : LiveData<Pair<List<Drink>,Double>> = _showTotal
 
     private val TAG = MainViewModel::class.java.simpleName
 
@@ -39,6 +41,7 @@ class MainViewModel @Inject constructor(
         _defaultDrinks.value = null
         _drinksForOpenedBill.value = null
         _newDrink.value = null
+        _showTotal.value = null
         _billClosed.value = false
         loadDrinks()
     }
@@ -143,10 +146,28 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun loadTotalOfBill(){
+
+        viewModelScope.launch(context = Dispatchers.Main) {
+
+            val drinks = withContext(context = Dispatchers.IO) {
+                interactor.loadDrinksFromOpenedBill().await()
+            }
+
+            val totalOfBill = withContext(context = Dispatchers.IO){
+                interactor.callTotalOfBill(drinks).await()
+            }
+
+            _showTotal.postValue(Pair(drinks,totalOfBill))
+//            getView()?.showTotal(drinks,totalOfBill)
+        }
+    }
+
     override fun onCleared() {
         _newDrink.value = null
         _drinksForOpenedBill.value = null
         _defaultDrinks.value = null
+        _showTotal.value = null
         _billClosed.value = false
     }
 

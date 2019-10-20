@@ -20,7 +20,7 @@ class HistoricViewModel @Inject constructor(private val interactor: HistoricInte
 
     init {
         _listBillResult.value = null
-        loadBills()
+//        loadBills()
     }
 
    fun loadBills() {
@@ -31,7 +31,6 @@ class HistoricViewModel @Inject constructor(private val interactor: HistoricInte
                 interactor.loadBills().await()
             }
             _listBillResult.postValue(billList)
-//            getView()?.showBills(billList)
 
         }
     }

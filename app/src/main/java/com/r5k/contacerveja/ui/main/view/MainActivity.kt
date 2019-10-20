@@ -66,6 +66,14 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         viewpager_main.adapter = fragmentAdapter
 
         tabs_main.setupWithViewPager(viewpager_main)
+        if (intent?.action.equals(AppConstants.ACTION_NEW_BILL)){
+            mainViewModel.createBill()
+        } else if (intent?.action.equals(AppConstants.ACTION_LOAD_BILL)){
+            if (intent.hasExtra(AppConstants.KEY_BILL_ID)){
+                val billId = intent.getLongExtra(AppConstants.KEY_BILL_ID, -1)
+                mainViewModel.loadDrinksFromBillId(billId)
+            }
+        }
         setupObserver()
     }
 
@@ -77,14 +85,6 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
             }
         })
 
-        if (intent?.action.equals(AppConstants.ACTION_NEW_BILL)){
-            mainViewModel.createBill()
-        } else if (intent?.action.equals(AppConstants.ACTION_LOAD_BILL)){
-            if (intent.hasExtra(AppConstants.KEY_BILL_ID)){
-                val billId = intent.getLongExtra(AppConstants.KEY_BILL_ID, -1)
-                mainViewModel.loadDrinksFromBillId(billId)
-            }
-        }
         mainViewModel.defaultDrinks.observe(this, Observer {
             it?.let{
                 loadDefaultDrinks(it)
@@ -99,7 +99,15 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         })
 
         mainViewModel.billClosed.observe(this, Observer {
+            if(it) {
+                onClosedBill()
+            }
+        })
 
+        mainViewModel.showTotal.observe(this, Observer {
+            it?.let {
+                showTotal(it.first,it.second)
+            }
         })
     }
 
@@ -239,7 +247,7 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         builder.show()
     }
 
-    fun onClosedBill() {
+    private fun onClosedBill() {
         finish()
     }
 
