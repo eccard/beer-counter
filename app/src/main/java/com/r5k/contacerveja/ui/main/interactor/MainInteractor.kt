@@ -4,34 +4,33 @@ import com.r5k.contacerveja.data.database.repository.bill.Bill
 import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
-import com.r5k.contacerveja.ui.base.BaseInteractor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import javax.inject.Inject
 
-class MainInteractor @Inject internal constructor(private val drinksRepoHelper: DrinksRepository,
-                                                  private val billsRepository: BillsRepository ): BaseInteractor(),MainMVPInteractor{
+class MainInteractor @Inject constructor(private val drinksRepoHelper: DrinksRepository,
+                                                  private val billsRepository: BillsRepository ){
 
     private var mOpenedBillId: Long = -1
 
-    override fun getBillData() {
+    fun getBillData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //        billsRepository.loadBills()
     }
 
 
-    override suspend fun getOpenedBill() = GlobalScope.async {
+    suspend fun getOpenedBill() = GlobalScope.async {
         billsRepository.loadOpenedBills()
     }
 
 
-    override suspend fun loadDrinksFromBillId(billId: Long) = GlobalScope.async {
+    suspend fun loadDrinksFromBillId(billId: Long) = GlobalScope.async {
         mOpenedBillId = billId
         drinksRepoHelper.loadDrinksFromBillId(billId)
     }
 
 
-    override suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
+    suspend fun createBillAndDefaultDrinks(bill: Bill) = GlobalScope.async {
         mOpenedBillId = billsRepository.insertBill(bill)
 
         val drink1Name = "Cerveja Brama"
@@ -56,21 +55,21 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         )
     }
 
-    override fun createBill(bill: Bill): Boolean {
+    fun createBill(bill: Bill): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override suspend fun addDrink(drinkName: String) = GlobalScope.async {
+    suspend fun addDrink(drinkName: String) = GlobalScope.async {
         val drinkId = drinksRepoHelper.insertDrink(Drink(null, drinkName, null, 0, mOpenedBillId))
         Drink(drinkId,drinkName,null,0,mOpenedBillId)
     }
 
-    override suspend fun loadDrinksFromOpenedBill() = GlobalScope.async {
+    suspend fun loadDrinksFromOpenedBill() = GlobalScope.async {
         drinksRepoHelper.loadDrinksFromBillId(mOpenedBillId)
     }
 
-    override suspend fun callTotalOfBill(drinks: List<Drink>) = GlobalScope.async {
+    suspend fun callTotalOfBill(drinks: List<Drink>) = GlobalScope.async {
 
         var total: Double = 0.0
 
@@ -82,11 +81,11 @@ class MainInteractor @Inject internal constructor(private val drinksRepoHelper: 
         total
     }
 
-    override fun closeBill() = GlobalScope.async {
+   fun closeBill() = GlobalScope.async {
         billsRepository.closeBill(mOpenedBillId)
     }
 
-    override fun checkIfBillIsOpened()  = GlobalScope.async {
+    fun checkIfBillIsOpened()  = GlobalScope.async {
         billsRepository.checkIfBillIsOpened(mOpenedBillId)
     }
 }

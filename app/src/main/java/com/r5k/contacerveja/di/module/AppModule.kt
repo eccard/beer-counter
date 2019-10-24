@@ -8,12 +8,15 @@ import com.r5k.contacerveja.data.database.repository.bill.BillsRepo
 import com.r5k.contacerveja.data.database.repository.bill.BillsRepository
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepo
 import com.r5k.contacerveja.data.database.repository.drink.DrinksRepository
+import com.r5k.contacerveja.di.factory.ViewModelFactoryModule
+import com.r5k.contacerveja.ui.drink.interactor.DrinkInteractor
+import com.r5k.contacerveja.ui.main.interactor.MainInteractor
 import com.r5k.contacerveja.util.AppConstants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ViewModelFactoryModule::class])
 class AppModule {
 
     @Provides

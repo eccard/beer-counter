@@ -9,14 +9,18 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
+import com.r5k.contacerveja.BR
 import com.r5k.contacerveja.R
 import com.r5k.contacerveja.data.database.repository.drink.Drink
-import com.r5k.contacerveja.ui.base.BaseActivity
+import com.r5k.contacerveja.databinding.ActivityMainBinding
+import com.r5k.contacerveja.di.factory.ViewModelProviderFactory
 import com.r5k.contacerveja.ui.drink.DrinkPagerAdapter
+import com.r5k.contacerveja.ui.base.BaseActivity
 import com.r5k.contacerveja.ui.main.interactor.DefaultDrinksForBill
-import com.r5k.contacerveja.ui.main.interactor.MainInteractor
-import com.r5k.contacerveja.ui.main.presenter.MainMVPPresenter
 import com.r5k.contacerveja.util.AppConstants
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -24,68 +28,113 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
-
-
-    private val TAG = MainActivity::class.java.simpleName
+class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener,HasSupportFragmentInjector {
 
     @Inject
-    internal lateinit var presenter: MainMVPPresenter<MainMVPView,MainInteractor>
+    lateinit var factory: ViewModelProviderFactory
+
 
     @Inject
     internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    private lateinit var mainViewModel: MainViewModel
+
+    private lateinit var activityMainBinding: ActivityMainBinding
+    override fun getLayoutId(): Int = R.layout.activity_main
+
+    override fun getViewModel(): MainViewModel {
+        mainViewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        return mainViewModel
+    }
+
+    override fun getBindingVariable(): Int = BR.viewModel
+
+    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+        return true
+    }
+
+
+    private val TAG = MainActivity::class.java.simpleName
 
     private lateinit var fragmentAdapter: DrinkPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityMainBinding = getViewDataBinding()
 
         fragmentAdapter = DrinkPagerAdapter(supportFragmentManager)
         viewpager_main.adapter = fragmentAdapter
 
         tabs_main.setupWithViewPager(viewpager_main)
-
-        presenter.onAttach(this)
-
         if (intent?.action.equals(AppConstants.ACTION_NEW_BILL)){
-            presenter.createBill()
+            mainViewModel.createBill()
         } else if (intent?.action.equals(AppConstants.ACTION_LOAD_BILL)){
             if (intent.hasExtra(AppConstants.KEY_BILL_ID)){
                 val billId = intent.getLongExtra(AppConstants.KEY_BILL_ID, -1)
-                presenter.loadDrinksFromBillId(billId)
+                mainViewModel.loadDrinksFromBillId(billId)
             }
         }
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        mainViewModel.newDrink.observe(this, Observer {
+            it?.let{
+
+                addNewDrink(it)
+            }
+        })
+
+        mainViewModel.defaultDrinks.observe(this, Observer {
+            it?.let{
+                loadDefaultDrinks(it)
+            }
+        })
+
+        mainViewModel.drinksForOpenedBill.observe(this, Observer {
+            it?.let {
+
+                loadDrinksForOpenedBill(it)
+            }
+        })
+
+        mainViewModel.billClosed.observe(this, Observer {
+            if(it) {
+                onClosedBill()
+            }
+        })
+
+        mainViewModel.showTotal.observe(this, Observer {
+            it?.let {
+                showTotal(it.first,it.second)
+            }
+        })
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =
         fragmentDispatchingAndroidInjector
 
-    override fun onFragmentAttached() {
-    }
 
-    override fun onFragmentDetached(tag: String) {
-    }
 
-    override fun lockDrawer() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    /*  override fun lockDrawer() {
+          TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
 
-    override fun unlockDrawer() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill) {
+      override fun unlockDrawer() {
+          TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      }
+  */
+    fun loadDefaultDrinks(drinksForBill : DefaultDrinksForBill) {
         Log.d(TAG, "loadDefaultDrinks DefaultDrinksForBill size = $drinksForBill")
         fragmentAdapter.setDrinkList(drinksForBill.drinksList)
     }
 
-    override fun loadDrinksForOpenedBill(drinks: List<Drink>) {
+    fun loadDrinksForOpenedBill(drinks: List<Drink>) {
         Log.d(TAG, "loadDefaultDrinks size = $drinks")
         fragmentAdapter.setDrinkList(drinks.toMutableList())
     }
 
-    override fun addNewDrink(drink: Drink) {
+    fun addNewDrink(drink: Drink) {
         fragmentAdapter.addDrink(drink)
     }
 
@@ -102,7 +151,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
             }
 
             R.id.action_close_bill -> {
-                presenter.loadTotalOfBill()
+                mainViewModel.loadTotalOfBill()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -132,7 +181,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 
             if (isValid) {
                 Log.d(TAG, "Adding newDrinkName $newDrinkName")
-                presenter.addNewDrink(newDrinkName.toString())
+                mainViewModel.addNewDrink(newDrinkName.toString())
                 dialog.dismiss()
             }
         }
@@ -153,7 +202,7 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
         fragmentAdapter.removeDrinkFragment(drink)
     }
 
-    override fun showTotal(drinks: List<Drink>, total: Double) {
+    fun showTotal(drinks: List<Drink>, total: Double) {
         val context = this
         val builder = AlertDialog.Builder(context)
 
@@ -191,18 +240,18 @@ class MainActivity : BaseActivity(), MainMVPView, HasSupportFragmentInjector {
 
         // set up the ok button
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            presenter.closeBill()
+            mainViewModel.closeBill()
         }
         builder.setNegativeButton(android.R.string.cancel){ dialog, _ -> dialog.dismiss() }
 
         builder.show()
     }
 
-    override fun onClosedBill() {
+    private fun onClosedBill() {
         finish()
     }
 
-    override fun onBillLoadedStatus(isOpened: Boolean) {
+    fun onBillLoadedStatus(isOpened: Boolean) {
         Log.d(TAG,"onBillLoadedStatus isOpened=$isOpened")
     }
 }

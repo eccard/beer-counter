@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-internal abstract class DrinkFragmentProvider{
+abstract class DrinkFragmentProvider {
 
-    @ContributesAndroidInjector(modules = [(DrinkFragmentModule::class)])
-    internal abstract fun provideDrinkFragmentFactory(): DrinkFragment
+    @ContributesAndroidInjector(modules = [DrinkFragmentModule::class])
+    abstract fun provideDrinkFragment(): DrinkFragment
 }
