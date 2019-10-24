@@ -43,7 +43,6 @@ class MainViewModel @Inject constructor(
         _newDrink.value = null
         _showTotal.value = null
         _billClosed.value = false
-        loadDrinks()
     }
 
 
