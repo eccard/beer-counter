@@ -1,1 +1,48 @@
 include ':app'
+
+loadLocalProperties()
+
+def loadLocalProperties() {
+
+    def localProperties = new File(rootDir, "local.properties")
+    if (!localProperties.exists()) {
+        throw new GradleException("local.properties is missing!")
+    }
+    Properties properties = new Properties()
+    localProperties.withInputStream { instr ->
+        properties.load(instr)
+    }
+
+    String sdkDirectory = properties.get('sdk.dir')
+    if (sdkDirectory == null) {
+        throw new GradleException("SDK not configured. Add sdk.dir=/path/to/sdk to local.properties.")
+    } else {
+        System.setProperty('sdk.dir', sdkDirectory)
+    }
+
+    def map = [
+            'KEYSTORE_PATH'  : 'Set "KEYSTORE_PATH"',
+            'KEYSTORE_PASSWORD'  : 'Set "KEYSTORE_PASSWORD"',
+            'KEY_ALIAS' : 'Set "KEY_ALIAS"',
+            'KEY_PASSWORD' : 'Set "KEY_PASSWORD" '
+
+    ]
+
+    String var
+    for (e in map) {
+        var = properties.get(e.key)
+        if (var == null) {
+            String envKey = System.getenv(e.key)
+            if (envKey != null && !envKey.isEmpty()){
+                println("Load from ENV. " + e.key + "=" + envKey)
+                System.setProperty(e.key, envKey)
+            } else {
+                println(e.key + " not configured. Its optional, you can add " + e.key + " to local.properties. " + e.value + "or add to ENV")
+            }
+
+        } else {
+            System.setProperty(e.key, var)
+        }
+    }
+
+}
