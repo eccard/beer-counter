@@ -25,7 +25,7 @@ android {
     signingConfigs {
 
         release {
-            storeFile file(System.getProperty("KEYSTORE_PATH"))
+            storeFile file(System.getProperty("KEYSTORE_PATH")?: "keystore.jks")
             storePassword System.getProperty('KEYSTORE_PASSWORD')
             keyAlias = System.getProperty('KEY_ALIAS')
             keyPassword System.getProperty('KEY_PASSWORD')

@@ -10,7 +10,7 @@ def loadFromEnvOrLocalProperties(String fileName,
     def file = new File(rootDir, fileName)
 
     if (!file.exists()) {
-        println("$file.getAbsolutePath() is missing! ")
+        println("$file.absolutePath is missing! ")
     } else {
         properties = new Properties()
         file.withInputStream { instr ->
@@ -32,7 +32,7 @@ def loadFromEnvOrLocalProperties(String fileName,
                 println("Load from ENV. " + e.key + "=" + envKey)
                 System.setProperty(e.key, envKey)
             } else {
-                String message = e.key + " not configured. Its %s, you can add " + e.key + " to local.properties. " + e.value + "or add to ENV"
+                String message = e.key + " not configured. Its %s.  " + e.key
                 if (isMandatory){
                     throw new GradleException(String.format(message,"mandatory"))
                 } else {
@@ -51,12 +51,6 @@ def loadFromEnvOrLocalProperties(String fileName,
 def loadLocalProperties() {
 
     String fileName = 'local.properties'
-
-    def mandatoryConfig = [
-            'sdk.dir' : 'SDK not configured. Add sdk.dir=/path/to/sdk to local.properties.',
-    ]
-
-    loadFromEnvOrLocalProperties(fileName,true, mandatoryConfig )
 
     def optionalConfig = [
             'KEYSTORE_PATH'  : 'Set "KEYSTORE_PATH"',
