@@ -56,7 +56,8 @@ def loadLocalProperties() {
             'KEYSTORE_PATH'  : 'Set "KEYSTORE_PATH"',
             'KEYSTORE_PASSWORD'  : 'Set "KEYSTORE_PASSWORD"',
             'KEY_ALIAS' : 'Set "KEY_ALIAS"',
-            'KEY_PASSWORD' : 'Set "KEY_PASSWORD" '
+            'KEY_PASSWORD' : 'Set "KEY_PASSWORD" ',
+            'PRIVATE_KEY_PATH' : 'Set "PRIVATE_KEY_PATH" '
 
     ]
 
