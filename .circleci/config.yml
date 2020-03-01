@@ -1,38 +1,145 @@
 version: 2
-jobs:
-  build:
-    working_directory: ~/code
+
+# common configs
+references:
+
+  ## Cache
+  cache_paths: &cache_paths
+    paths:
+      - ~/.gradle
+      - ~/.m2
+
+  workspace: &workspace
+               ~/code
+
+  android_config: &android_config
+    working_directory: *workspace
     docker:
+      # This needs to be in line with the configuration from gradle file.
+      # Otherwise an unnecessary platform update is performed on every build
       - image: circleci/android:api-28-alpha
     environment:
       JVM_OPTS: -Xmx3200m
+
+  cache_key: &cache_key
+    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+
+  restore_cache: &restore_cache
+    restore_cache:
+      <<: *cache_key
+
+  save_cache: &save_cache
+    save_cache:
+      <<: *cache_key
+      <<: *cache_paths
+
+  persist_debug_workspace: &persist_debug_workspace
+    persist_to_workspace:
+      root: *workspace
+      paths:
+        - app/build/outputs/androidTest-results
+        - app/build/outputs/apk
+        - app/build/outputs/code-coverage
+        - app/build/test-results
+
+  store_debug_artifacts: &store_debug_artifacts
+    store_artifacts:
+      path: app/build/reports
+      destination: reports
+
+  fix_gradlew_permission: &fix_gradlew_permission
+    run:
+      name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+      command: sudo chmod +x ./gradlew
+
+  gen_signing_key: &gen_signing_key
+     run :
+       name : Gen Signing key
+       shell: /bin/sh
+       command : |
+         echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
+         echo "export KEYSTORE_PATH=${HOME}/keystore.jks" >> $BASH_ENV
+         echo $DEPLOYMENT_PRIVATE_KEY | base64 --decode >> ${HOME}/deployment_private_key.json
+         echo "export PRIVATE_KEY_PATH=${HOME}/deployment_private_key.json" >> $BASH_ENV
+
+  download_deps: &download_deps
+    run:
+      name: Download dependencies
+      command: ./gradlew androidDependencies
+
+# end common configs
+
+jobs:
+  build_debug:
+    <<: *android_config
     steps:
       - checkout
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - *restore_cache
+      - *fix_gradlew_permission
+      - *gen_signing_key
+      - *download_deps
+      - *save_cache
       - run:
-         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-         command: sudo chmod +x ./gradlew
-      - run: echo $ENCODED_KEYSTORE | base64 --decode >> ${HOME}/keystore.jks
-      - run: echo ‘export KEYSTORE_PATH=${HOME}/keystore.jks’ >> $BASH_ENV
-      - run: echo $DEPLOYMENT_PRIVATE_KEY | base64 --decode >> ${HOME}/deployment_private_key.json
-      - run: echo ‘export PRIVATE_KEY_PATH=${HOME}/deployment_private_key.json’ >> $BASH_ENV
+          name: Assemble debug build
+          command: |
+            ./gradlew assembleDebug -PdisablePreDex
       - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          name: Assemble test build
+          command: |
+            ./gradlew assembleDebugAndroidTest -PdisablePreDex
+      - *store_debug_artifacts
+      #         Since the other workflow are only triggered after this job is successful, caching the build outputs for them can be the last task.
+      #         Otherwise we only persist something that will never be used.
+      - *persist_debug_workspace
+
+  test_unit:
+    <<: *android_config
+    steps:
+      - checkout
+      - *restore_cache
+      - *fix_gradlew_permission
+      - *gen_signing_key
+      - *download_deps
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
-          path: app/build/reports
-          destination: reports
-      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          name: Run unit tests
+          command: ./gradlew testDebugUnitTest
+      - *save_cache
+      - *persist_debug_workspace
+      - *store_debug_artifacts
+      - store_test_results:
           path: app/build/test-results
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+
+  deploy:
+    <<: *android_config
+    steps:
+      - checkout
+      - *restore_cache
+      - *fix_gradlew_permission
+      - *gen_signing_key
+      - *download_deps
       - run:
           name: Upload to Google Play
           command: ./gradlew publishRelease
+
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      #       This job will run on every commit on any branch
+      - build_debug
+      #       Unit tests should only start after a successful build. Or vice versa?
+      - test_unit:
+          #         Although the unit testing task could run in parallel with build task,
+          #         in such case, it would not benefit from the previous caching in the event of
+          #         any change in the .gradle script files.
+          #         Hence,
+          requires:
+            - build_debug
+      - deploy:
+          requires:
+            - test_unit
+          filters:
+            branches:
+              only: master
+
