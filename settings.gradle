@@ -1,1 +1,67 @@
 include ':app'
+
+loadLocalProperties()
+
+def loadFromEnvOrLocalProperties(String fileName,
+                                 Boolean isMandatory,
+                                 Map envs){
+
+    Properties properties = null
+    def file = new File(rootDir, fileName)
+
+    if (!file.exists()) {
+        println("$file.absolutePath is missing! ")
+    } else {
+        properties = new Properties()
+        file.withInputStream { instr ->
+            properties.load(instr)
+        }
+    }
+
+
+    String var
+    for (e in envs) {
+        if (properties != null){
+            var = properties.get(e.key)
+        } else {
+            var = null
+        }
+        if (var == null) {
+            String envKey = System.getenv(e.key)
+            if (envKey != null && !envKey.isEmpty()){
+                println("Load from ENV. " + e.key + "=" + envKey)
+                System.setProperty(e.key, envKey)
+            } else {
+                String message = e.key + " not configured. Its %s.  " + e.key
+                if (isMandatory){
+                    throw new GradleException(String.format(message,"mandatory"))
+                } else {
+                    println(String.format(message,"optinal"))
+                }
+            }
+
+        } else {
+            println("Load from local.properties. " + e.key + "=" + var)
+            System.setProperty(e.key, var)
+        }
+    }
+
+}
+
+def loadLocalProperties() {
+
+    String fileName = 'local.properties'
+
+    def optionalConfig = [
+            'KEYSTORE_PATH'  : 'Set "KEYSTORE_PATH"',
+            'KEYSTORE_PASSWORD'  : 'Set "KEYSTORE_PASSWORD"',
+            'KEY_ALIAS' : 'Set "KEY_ALIAS"',
+            'KEY_PASSWORD' : 'Set "KEY_PASSWORD" ',
+            'PRIVATE_KEY_PATH' : 'Set "PRIVATE_KEY_PATH" '
+
+    ]
+
+    loadFromEnvOrLocalProperties(fileName,false, optionalConfig )
+
+
+}

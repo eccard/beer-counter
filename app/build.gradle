@@ -1,10 +1,10 @@
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'com.github.triplet.play' version '2.0.0'
+}
 
 apply from: rootProject.file("dependencies.gradle")
 
@@ -15,21 +15,42 @@ android {
         applicationId "com.r5k.contacerveja"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
     }
+
+    signingConfigs {
+
+        release {
+            storeFile file(System.getProperty("KEYSTORE_PATH")?: "keystore.jks")
+            storePassword System.getProperty('KEYSTORE_PASSWORD')
+            keyAlias = System.getProperty('KEY_ALIAS')
+            keyPassword System.getProperty('KEY_PASSWORD')
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     dataBinding {
         enabled = true
     }
+}
+
+// Configuration for com.github.triplet.play deployment
+play {
+    track = 'internal' // or alpha or beta...
+    serviceAccountCredentials = file(System.getProperty("PRIVATE_KEY_PATH") ?: "private_key.json")
+    defaultToAppBundles = true // Use App Bundle instead of APK
+    resolutionStrategy = "ignore" //If the deployment fails due to an API error, don't fail the CI Build
 }
 
 dependencies {
