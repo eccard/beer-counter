@@ -159,9 +159,8 @@ class DrinkFragment : BaseFragment<FragmentGenericDrinkBinding,DrinkViewModel>()
         mainActivity.updateTitle(drink)
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.action_edit_drink -> {
                 showEditDialog()
                 true

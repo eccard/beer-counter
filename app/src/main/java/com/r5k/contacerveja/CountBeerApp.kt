@@ -1,19 +1,19 @@
 package com.r5k.contacerveja
 
-import android.app.Activity
 import android.app.Application
 import com.r5k.contacerveja.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class CountBeerApp : Application(), HasActivityInjector{
+class CountBeerApp : Application(), HasAndroidInjector{
 
     @Inject
-    lateinit internal var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    lateinit internal var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
 
-    override fun activityInjector() = activityDispatchingAndroidInjector
+    override fun androidInjector() = activityDispatchingAndroidInjector
+
 
     override fun onCreate() {
         super.onCreate()
