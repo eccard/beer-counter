@@ -24,18 +24,18 @@ import com.r5k.contacerveja.ui.main.interactor.DefaultDrinksForBill
 import com.r5k.contacerveja.util.AppConstants
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener,HasSupportFragmentInjector {
+class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), NavigationView.OnNavigationItemSelectedListener,HasAndroidInjector {
 
     @Inject
     lateinit var factory: ViewModelProviderFactory
 
 
     @Inject
-    internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -111,8 +111,9 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         })
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> =
-        fragmentDispatchingAndroidInjector
+    override fun androidInjector(): AndroidInjector<Any> {
+        return fragmentDispatchingAndroidInjector
+    }
 
 
 
