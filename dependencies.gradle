@@ -7,6 +7,7 @@ ext {
     def recyclerView_version = '1.1.0'
     def legacySupport_version = '1.0.0'
     def lifecycle_version = '2.2.0'
+    def viewPager_version = '1.0.0'
     supportLibraries = [
             appcompat : "androidx.appcompat:appcompat:$supportLibraries_version",
             androidxcore : "androidx.core:core-ktx:$supportLibraries_version",
@@ -17,7 +18,8 @@ ext {
             lifecycle : "android.arch.lifecycle:extensions:$lifecycle_version",
             lifecycle_ext : "androidx.lifecycle:lifecycle-extensions:$lifecycle_version",
             lifecycle_viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version",
-            v4 : "androidx.legacy:legacy-support-v4:$legacySupport_version"
+            v4 : "androidx.legacy:legacy-support-v4:$legacySupport_version",
+            viewPager : "androidx.viewpager2:viewpager2:$viewPager_version"
     ]
 
 
