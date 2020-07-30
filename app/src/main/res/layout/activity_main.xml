@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 app:tabMode="fixed" tools:ignore="MissingConstraints"/>
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewpager_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

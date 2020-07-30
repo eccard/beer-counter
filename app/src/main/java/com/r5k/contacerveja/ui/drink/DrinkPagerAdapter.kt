@@ -2,12 +2,12 @@ package com.r5k.contacerveja.ui.drink
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.PagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.r5k.contacerveja.data.database.repository.drink.Drink
 import com.r5k.contacerveja.ui.drink.view.DrinkFragment
 
-class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class DrinkPagerAdapter(fm: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fm,lifecycle) {
 
 
     private var drinksList : MutableList<Drink>? = null
@@ -28,7 +28,7 @@ class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         drinksList!!.removeAt(drinkPosition)
     }
 
-    override fun getItem(position: Int): Fragment {
+    override fun createFragment(position: Int): Fragment {
         val itemId = getItemId(position)
 
         var frg = entries[itemId]
@@ -42,11 +42,12 @@ class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return frg!!
     }
 
-    override fun getCount(): Int{
+    override fun getItemCount(): Int {
         return if (drinksList != null) drinksList!!.size else 0
     }
 
-    override fun getPageTitle(position: Int): CharSequence {
+
+    fun getPageTitle(position: Int): CharSequence {
         return drinksList?.get(position)?.name!!
     }
 
@@ -77,27 +78,6 @@ class DrinkPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         }
     }
 
-
-
-    override fun getItemPosition(`object`: Any): Int {
-        val f : Fragment = `object` as Fragment
-
-        for ( i in 0 until count){
-            val item : Fragment = getItem(i)
-            if (item == f){
-                return i
-            }
-        }
-
-        for ((key, value) in entries) {
-            if (value == f){
-                entries.remove(key)
-                break
-            }
-        }
-
-        return PagerAdapter.POSITION_NONE
-    }
 
     override fun getItemId(position: Int): Long {
         return drinksList?.get(position)?.id!!

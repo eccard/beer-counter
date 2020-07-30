@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.textfield.TextInputEditText
 import com.r5k.contacerveja.BR
 import com.r5k.contacerveja.R
@@ -62,10 +63,14 @@ class MainActivity : BaseActivity<ActivityMainBinding,MainViewModel>(), Navigati
         super.onCreate(savedInstanceState)
         activityMainBinding = getViewDataBinding()
 
-        fragmentAdapter = DrinkPagerAdapter(supportFragmentManager)
+
+        fragmentAdapter = DrinkPagerAdapter(supportFragmentManager, lifecycle)
         viewpager_main.adapter = fragmentAdapter
 
-        tabs_main.setupWithViewPager(viewpager_main)
+        TabLayoutMediator(tabs_main, viewpager_main) { tab, position ->
+            tab.text =  fragmentAdapter.getPageTitle(position)
+        }.attach()
+
         if (intent?.action.equals(AppConstants.ACTION_NEW_BILL)){
             mainViewModel.createBill()
         } else if (intent?.action.equals(AppConstants.ACTION_LOAD_BILL)){
